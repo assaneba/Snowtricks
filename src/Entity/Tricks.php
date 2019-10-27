@@ -57,16 +57,16 @@ class Tricks
     private $defaultImage;
 
     /**
-     * @var \Group
+     * @var \GroupOfTricks
      *
-     * @ORM\ManyToOne(targetEntity="Group")
+     * @ORM\ManyToOne(targetEntity="GroupOfTricks")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="group_idgroup", referencedColumnName="idgroup")
      * })
      */
     private $groupgroup;
 
-    public function getIdtricks(): ?bool
+    public function getIdtricks(): ?int
     {
         return $this->idtricks;
     }
@@ -131,12 +131,12 @@ class Tricks
         return $this;
     }
 
-    public function getGroupgroup(): ?Group
+    public function getGroupgroup(): ?GroupOfTricks
     {
         return $this->groupgroup;
     }
 
-    public function setGroupgroup(?Group $groupgroup): self
+    public function setGroupgroup(?GroupOfTricks $groupgroup): self
     {
         $this->groupgroup = $groupgroup;
 

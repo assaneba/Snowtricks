@@ -38,7 +38,7 @@ class Image
      */
     private $trickstricks;
 
-    public function getIdimage(): ?bool
+    public function getIdimage(): ?int
     {
         return $this->idimage;
     }

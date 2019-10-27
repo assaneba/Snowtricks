@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Group;
+use App\Entity\GroupOfTricks;
 use App\Entity\Tricks;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +21,7 @@ class TrickType extends AbstractType
             //->add('lastModifyAt')
             ->add('defaultImage')
             ->add('groupgroup', EntityType::class, [
-                'class' => Group::class,
+                'class' => GroupOfTricks::class,
                 'label' => 'Groupe du trick'
             ])
         ;

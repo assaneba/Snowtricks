@@ -5,12 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Group
+ * GroupOfTricks
  *
- * @ORM\Table(name="group", uniqueConstraints={@ORM\UniqueConstraint(name="name_UNIQUE", columns={"name"})})
+ * @ORM\Table(name="groupoftrciks", uniqueConstraints={@ORM\UniqueConstraint(name="name_UNIQUE", columns={"name"})})
  * @ORM\Entity
  */
-class Group
+class GroupOfTricks
 {
     /**
      * @var bool
@@ -28,7 +28,7 @@ class Group
      */
     private $name;
 
-    public function getIdgroup(): ?bool
+    public function getIdgroup(): ?int
     {
         return $this->idgroup;
     }

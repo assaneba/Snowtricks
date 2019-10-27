@@ -38,7 +38,7 @@ class Video
      */
     private $trickstricks;
 
-    public function getIdvideo(): ?bool
+    public function getIdvideo(): ?int
     {
         return $this->idvideo;
     }
