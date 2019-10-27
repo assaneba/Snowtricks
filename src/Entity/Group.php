@@ -15,7 +15,7 @@ class Group
     /**
      * @var bool
      *
-     * @ORM\Column(name="idgroup", type="boolean", nullable=false)
+     * @ORM\Column(name="idgroup", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */

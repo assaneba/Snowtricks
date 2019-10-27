@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Tricks;
+use App\Form\TrickType;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,9 +24,14 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/ajout", name="trick_add")
      */
-    public function addTrick()
+    public function addTrick(ObjectManager $manager)
     {
+        $trick = new Tricks();
 
-        return $this->render('trick/add.html.twig');
+        $form = $this->createForm(TrickType::class, $trick);
+
+        return $this->render('trick/add.html.twig', [
+            'formTrick' => $form->createView()
+        ]);
     }
 }

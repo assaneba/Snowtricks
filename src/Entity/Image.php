@@ -15,7 +15,7 @@ class Image
     /**
      * @var bool
      *
-     * @ORM\Column(name="idimage", type="boolean", nullable=false)
+     * @ORM\Column(name="idimage", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */

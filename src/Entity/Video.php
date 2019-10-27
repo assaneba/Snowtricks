@@ -15,7 +15,7 @@ class Video
     /**
      * @var bool
      *
-     * @ORM\Column(name="idvideo", type="boolean", nullable=false)
+     * @ORM\Column(name="idvideo", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */

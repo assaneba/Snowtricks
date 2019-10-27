@@ -15,7 +15,7 @@ class Tricks
     /**
      * @var bool
      *
-     * @ORM\Column(name="idtricks", type="boolean", nullable=false)
+     * @ORM\Column(name="idtricks", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */

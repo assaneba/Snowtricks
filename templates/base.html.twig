@@ -6,7 +6,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
 
         <!-- Bootstrap core CSS -->
         <link href="{{ asset('node_modules/startbootstrap-agency/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -19,12 +19,13 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
         <!-- Custom styles for this template -->
-        <link href="{{ asset('node_modules/startbootstrap-agency/css/agency.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('node_modules/startbootstrap-agency/css/agency.min.css') }}" rel="stylesheet"> <!-- Custom styles for this template -->
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
         {% block stylesheets %}{% endblock %}
     </head>
 
-    <body id="page-top">
+    <body>
 
     <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -37,16 +38,22 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="#services">Home</a>
+                            <a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="#portfolio">Tricks</a>
+                            <a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Tricks</a>
                         </li>
+                        {% if not app.user %}
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="#about">Sign in</a>
+                            <a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Sign in</a>
                         </li>
+                        {% else %}
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="#team">Sign up</a>
+                            <a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Logout</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Sign up</a>
                         </li>
 
                     </ul>
@@ -54,23 +61,49 @@
             </div>
         </nav>
 
-
-        {% block header %}
-        <!-- Header -->
-        <header class="masthead">
-            <div class="container">
-                <div class="intro-text">
-                    <div class="intro-lead-in">Welcome To Our Studio!</div>
-                    <div class="intro-heading text-uppercase">It's Nice To Meet You</div>
-                    <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a>
-                </div>
-            </div>
-        </header>
-        {% endblock %}
+        {% block header %} {% endblock %}
 
         {% block body %}{% endblock %}
 
-        <!-- Bootstrap core JavaScript -->
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <span class="copyright"> &copy; Snowtricks 2019</span>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="list-inline social-buttons">
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="list-inline quicklinks">
+                            <li class="list-inline-item">
+                                <a href="#">Privacy Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+    <!-- Bootstrap core JavaScript -->
         <script src="{{ asset('node_modules/startbootstrap-agency/vendor/jquery/jquery.min.js') }}"></script>
         <script src="{{ asset('node_modules/startbootstrap-agency/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
