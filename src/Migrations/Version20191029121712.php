@@ -22,7 +22,7 @@ final class Version20191029121712 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE tricks ADD CONSTRAINT FK_E1D902C13DC57CD0 FOREIGN KEY (group_idgroup) REFERENCES groupoftrciks (idgroup)');
+        //$this->addSql('ALTER TABLE tricks ADD CONSTRAINT FK_E1D902C13DC57CD0 FOREIGN KEY (group_idgroup) REFERENCES groupoftrciks (idgroup)');
     }
 
     public function down(Schema $schema) : void

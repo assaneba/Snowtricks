@@ -69,7 +69,7 @@ class Tricks
     private $groupgroup;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="tricks")
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="trick", cascade={"persist"})
      *  * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="image_idimage", referencedColumnName="idimage")
      * })

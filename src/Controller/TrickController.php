@@ -58,16 +58,35 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/ajout", name="trick_add")
      */
-    public function addTrick(ObjectManager $manager)
+    public function addTrick(ObjectManager $manager, Request $request)
     {
         $trick = new Tricks();
 
-        $images = new Image();
-        $images->setUrl('http://placehold.it');
+       /* $images = new Image();
+        $images->setUrl('http://placehold.it/300x200');
+        $images2 = new Image();
+        $images2->setUrl('http://placehold.it/300x200');
 
-        $trick->addImage($images);
+        $trick->getImages()->add($images);
+        $trick->getImages()->add($images2);*/
+
+        //$trick->addImage($images);
 
         $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
+
+        dump();
+
+        if($form->isSubmitted() AND $form->isValid())
+        {
+            $trick->setCreatedAt(new \DateTime());
+            $trick->setLastModifyAt(new \DateTime());
+            $manager->persist($trick);
+            $manager->flush();
+
+            return $this->redirectToRoute('trick', ['id' => $trick->getIdtricks()]);
+        }
+
 
         return $this->render('trick/add.html.twig', [
             'formTrick' => $form->createView()

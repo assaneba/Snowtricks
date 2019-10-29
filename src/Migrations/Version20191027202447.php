@@ -22,10 +22,10 @@ final class Version20191027202447 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE tricks DROP FOREIGN KEY FK_E1D902C13DC57CD0');
-        $this->addSql('CREATE TABLE groupoftrciks (idgroup INT AUTO_INCREMENT NOT NULL, name VARCHAR(45) NOT NULL, UNIQUE INDEX name_UNIQUE (name), PRIMARY KEY(idgroup)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('DROP TABLE `group`');
-        $this->addSql('ALTER TABLE tricks DROP FOREIGN KEY FK_E1D902C13DC57CD0');
+        //$this->addSql('ALTER TABLE tricks DROP FOREIGN KEY FK_E1D902C13DC57CD0');
+        //$this->addSql('CREATE TABLE groupoftrciks (idgroup INT AUTO_INCREMENT NOT NULL, name VARCHAR(45) NOT NULL, UNIQUE INDEX name_UNIQUE (name), PRIMARY KEY(idgroup)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        //$this->addSql('DROP TABLE `group`');
+        //$this->addSql('ALTER TABLE tricks DROP FOREIGN KEY FK_E1D902C13DC57CD0');
         $this->addSql('ALTER TABLE tricks ADD CONSTRAINT FK_E1D902C13DC57CD0 FOREIGN KEY (group_idgroup) REFERENCES groupoftrciks (idgroup)');
     }
 
