@@ -6,6 +6,7 @@ use App\Entity\GroupOfTricks;
 use App\Entity\Tricks;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +23,18 @@ class TrickType extends AbstractType
             ->add('defaultImage')
             ->add('groupgroup', EntityType::class, [
                 'class' => GroupOfTricks::class,
-                'label' => 'Groupe du trick'
+                'choice_label' => 'name'
+            ])
+            ->add('images', CollectionType::class, [
+                "entry_type" => ImageType::class,
+                'entry_options' => ['label' => false],
+                'required' => false,
+                "allow_add"     => true,
+                "allow_delete"  => true,
+                "by_reference"  => false,
+                'attr' => [
+                    'accept' => '.png, .jpeg, .jpg'
+                ]
             ])
         ;
     }
@@ -30,7 +42,7 @@ class TrickType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Tricks::class,
+            'data_class' => Tricks::class
         ]);
     }
 }

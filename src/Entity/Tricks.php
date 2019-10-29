@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -65,6 +67,35 @@ class Tricks
      * })
      */
     private $groupgroup;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="tricks")
+     *  * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="image_idimage", referencedColumnName="idimage")
+     * })
+     */
+    private $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages() : Collection
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param mixed $images
+     */
+    public function setImages($images): void
+    {
+        $this->images = $images;
+    }
 
     public function getIdtricks(): ?int
     {
@@ -139,6 +170,29 @@ class Tricks
     public function setGroupgroup(?GroupOfTricks $groupgroup): self
     {
         $this->groupgroup = $groupgroup;
+
+        return $this;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+            // set the owning side to null (unless already changed)
+            if ($image->getTrick() === $this) {
+                $image->setTrick(null);
+            }
+        }
 
         return $this;
     }

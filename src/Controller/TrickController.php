@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\GroupOfTricks;
+use App\Entity\Image;
 use App\Entity\Tricks;
 use App\Form\GroupType;
 use App\Form\TrickType;
@@ -27,7 +28,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/groupe", name="group_add")
+     * @Route("/trick/ajout-groupe", name="group_add")
      * @Route("/trick/edit-groupe/{id}", name="group_modify")
      */
     public function addGroup(Request $request, ObjectManager $manager, GroupOfTricks $group = null)
@@ -60,6 +61,11 @@ class TrickController extends AbstractController
     public function addTrick(ObjectManager $manager)
     {
         $trick = new Tricks();
+
+        $images = new Image();
+        $images->setUrl('http://placehold.it');
+
+        $trick->addImage($images);
 
         $form = $this->createForm(TrickType::class, $trick);
 

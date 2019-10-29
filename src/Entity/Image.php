@@ -38,6 +38,14 @@ class Image
      */
     private $trickstricks;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="images")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tricks_idtricks", referencedColumnName="idtricks")
+     * })
+     */
+    private $trick;
+
     public function getIdimage(): ?int
     {
         return $this->idimage;
@@ -63,6 +71,18 @@ class Image
     public function setTrickstricks(?Tricks $trickstricks): self
     {
         $this->trickstricks = $trickstricks;
+
+        return $this;
+    }
+
+    public function getTrick(): ?Tricks
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?Tricks $trick): self
+    {
+        $this->trick = $trick;
 
         return $this;
     }
