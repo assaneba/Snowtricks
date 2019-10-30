@@ -13,7 +13,7 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('url')
-            //->add('trickstricks')
+            ->add('trick')
         ;
     }
 

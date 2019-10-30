@@ -2,84 +2,75 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * User
- *
- * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="email_UNIQUE", columns={"email"}), @ORM\UniqueConstraint(name="Login_UNIQUE", columns={"Login"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="iduser", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $iduser;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="Login", type="string", length=35, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $login;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $password;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="first_name", type="string", length=45, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $firstName;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="last_name", type="string", length=15, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $lastName;
+    private $LastName;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=155, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="profile_image", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $profileImage;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="role", type="string", length=15, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $role;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
-    public function getIduser(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
+     */
+    private $comments;
+
+    public function __construct()
     {
-        return $this->iduser;
+        $this->comments = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getLogin(): ?string
@@ -120,12 +111,12 @@ class User
 
     public function getLastName(): ?string
     {
-        return $this->lastName;
+        return $this->LastName;
     }
 
-    public function setLastName(string $lastName): self
+    public function setLastName(string $LastName): self
     {
-        $this->lastName = $lastName;
+        $this->LastName = $LastName;
 
         return $this;
     }
@@ -178,5 +169,34 @@ class User
         return $this;
     }
 
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
 
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

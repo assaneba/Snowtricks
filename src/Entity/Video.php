@@ -5,42 +5,35 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Video
- *
- * @ORM\Table(name="video", indexes={@ORM\Index(name="fk_video_tricks_idx", columns={"tricks_idtricks"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
  */
 class Video
 {
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="idvideo", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idvideo;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="embed", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $embed;
 
     /**
-     * @var \Tricks
-     *
-     * @ORM\ManyToOne(targetEntity="Tricks")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tricks_idtricks", referencedColumnName="idtricks")
-     * })
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $trickstricks;
+    private $caption;
 
-    public function getIdvideo(): ?int
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="videos")
+     */
+    private $trick;
+
+    public function getId(): ?int
     {
-        return $this->idvideo;
+        return $this->id;
     }
 
     public function getEmbed(): ?string
@@ -55,17 +48,27 @@ class Video
         return $this;
     }
 
-    public function getTrickstricks(): ?Tricks
+    public function getCaption(): ?string
     {
-        return $this->trickstricks;
+        return $this->caption;
     }
 
-    public function setTrickstricks(?Tricks $trickstricks): self
+    public function setCaption(?string $caption): self
     {
-        $this->trickstricks = $trickstricks;
+        $this->caption = $caption;
 
         return $this;
     }
 
+    public function getTrick(): ?Tricks
+    {
+        return $this->trick;
+    }
 
+    public function setTrick(?Tricks $trick): self
+    {
+        $this->trick = $trick;
+
+        return $this;
+    }
 }

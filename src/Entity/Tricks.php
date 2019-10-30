@@ -7,99 +7,73 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Tricks
- *
- * @ORM\Table(name="tricks", uniqueConstraints={@ORM\UniqueConstraint(name="name_UNIQUE", columns={"name"})}, indexes={@ORM\Index(name="fk_tricks_group1_idx", columns={"group_idgroup"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TricksRepository")
  */
 class Tricks
 {
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="idtricks", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idtricks;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $description;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_modify_at", type="datetime", nullable=false)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastModifyAt;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="default_image", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $defaultImage;
 
     /**
-     * @var \GroupOfTricks
-     *
-     * @ORM\ManyToOne(targetEntity="GroupOfTricks")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="group_idgroup", referencedColumnName="idgroup")
-     * })
+     * @ORM\ManyToOne(targetEntity="App\Entity\GroupOfTricks", inversedBy="tricks")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $groupgroup;
+    private $groupOfTricks;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="trick", cascade={"persist"})
-     *  * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="image_idimage", referencedColumnName="idimage")
-     * })
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="trick", orphanRemoval=true)
+     */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="trick")
      */
     private $images;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="trick")
+     */
+    private $videos;
+
     public function __construct()
     {
+        $this->comments = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
-    /**
-     * @return Collection|Image[]
-     */
-    public function getImages() : Collection
+    public function getId(): ?int
     {
-        return $this->images;
-    }
-
-    /**
-     * @param mixed $images
-     */
-    public function setImages($images): void
-    {
-        $this->images = $images;
-    }
-
-    public function getIdtricks(): ?int
-    {
-        return $this->idtricks;
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -143,7 +117,7 @@ class Tricks
         return $this->lastModifyAt;
     }
 
-    public function setLastModifyAt(\DateTimeInterface $lastModifyAt): self
+    public function setLastModifyAt(?\DateTimeInterface $lastModifyAt): self
     {
         $this->lastModifyAt = $lastModifyAt;
 
@@ -162,16 +136,55 @@ class Tricks
         return $this;
     }
 
-    public function getGroupgroup(): ?GroupOfTricks
+    public function getGroupOfTricks(): ?GroupOfTricks
     {
-        return $this->groupgroup;
+        return $this->groupOfTricks;
     }
 
-    public function setGroupgroup(?GroupOfTricks $groupgroup): self
+    public function setGroupOfTricks(?GroupOfTricks $groupOfTricks): self
     {
-        $this->groupgroup = $groupgroup;
+        $this->groupOfTricks = $groupOfTricks;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getTrick() === $this) {
+                $comment->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
     }
 
     public function addImage(Image $image): self
@@ -197,5 +210,34 @@ class Tricks
         return $this;
     }
 
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
 
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+            // set the owning side to null (unless already changed)
+            if ($video->getTrick() === $this) {
+                $video->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
 }

@@ -5,50 +5,35 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Image
- *
- * @ORM\Table(name="image", indexes={@ORM\Index(name="fk_image_tricks1_idx", columns={"tricks_idtricks"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  */
 class Image
 {
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="idimage", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idimage;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
     private $url;
 
     /**
-     * @var \Tricks
-     *
-     * @ORM\ManyToOne(targetEntity="Tricks")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tricks_idtricks", referencedColumnName="idtricks")
-     * })
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $trickstricks;
+    private $caption;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="images")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tricks_idtricks", referencedColumnName="idtricks")
-     * })
      */
     private $trick;
 
-    public function getIdimage(): ?int
+    public function getId(): ?int
     {
-        return $this->idimage;
+        return $this->id;
     }
 
     public function getUrl(): ?string
@@ -63,14 +48,14 @@ class Image
         return $this;
     }
 
-    public function getTrickstricks(): ?Tricks
+    public function getCaption(): ?string
     {
-        return $this->trickstricks;
+        return $this->caption;
     }
 
-    public function setTrickstricks(?Tricks $trickstricks): self
+    public function setCaption(?string $caption): self
     {
-        $this->trickstricks = $trickstricks;
+        $this->caption = $caption;
 
         return $this;
     }
@@ -86,6 +71,4 @@ class Image
 
         return $this;
     }
-
-
 }

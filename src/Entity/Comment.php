@@ -5,73 +5,52 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Comment
- *
- * @ORM\Table(name="comment", indexes={@ORM\Index(name="fk_comment_user1_idx", columns={"user_iduser"}), @ORM\Index(name="fk_comment_tricks1_idx", columns={"tricks_idtricks"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
 class Comment
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="idcomment", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private $idcomment;
+    private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="content", type="text", length=255, nullable=false)
+     * @ORM\Column(type="text")
      */
     private $content;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_modify_at", type="datetime", nullable=false)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $lastModifyAt;
+    private $lastModifiedAt;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="published", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean")
      */
     private $published;
 
     /**
-     * @var \Tricks
-     *
-     * @ORM\ManyToOne(targetEntity="Tricks")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tricks_idtricks", referencedColumnName="idtricks")
-     * })
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $trickstricks;
+    private $trick;
 
     /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_iduser", referencedColumnName="iduser")
-     * })
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $useruser;
+    private $user;
 
-    public function getIdcomment(): ?int
+    public function getId(): ?int
     {
-        return $this->idcomment;
+        return $this->id;
     }
 
     public function getContent(): ?string
@@ -98,14 +77,14 @@ class Comment
         return $this;
     }
 
-    public function getLastModifyAt(): ?\DateTimeInterface
+    public function getLastModifiedAt(): ?\DateTimeInterface
     {
-        return $this->lastModifyAt;
+        return $this->lastModifiedAt;
     }
 
-    public function setLastModifyAt(\DateTimeInterface $lastModifyAt): self
+    public function setLastModifiedAt(?\DateTimeInterface $lastModifiedAt): self
     {
-        $this->lastModifyAt = $lastModifyAt;
+        $this->lastModifiedAt = $lastModifiedAt;
 
         return $this;
     }
@@ -122,29 +101,27 @@ class Comment
         return $this;
     }
 
-    public function getTrickstricks(): ?Tricks
+    public function getTrick(): ?Tricks
     {
-        return $this->trickstricks;
+        return $this->trick;
     }
 
-    public function setTrickstricks(?Tricks $trickstricks): self
+    public function setTrick(?Tricks $trick): self
     {
-        $this->trickstricks = $trickstricks;
+        $this->trick = $trick;
 
         return $this;
     }
 
-    public function getUseruser(): ?User
+    public function getUser(): ?User
     {
-        return $this->useruser;
+        return $this->user;
     }
 
-    public function setUseruser(?User $useruser): self
+    public function setUser(?User $user): self
     {
-        $this->useruser = $useruser;
+        $this->user = $user;
 
         return $this;
     }
-
-
 }

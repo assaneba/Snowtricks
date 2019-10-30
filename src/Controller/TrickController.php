@@ -7,6 +7,7 @@ use App\Entity\Image;
 use App\Entity\Tricks;
 use App\Form\GroupType;
 use App\Form\TrickType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,12 +47,12 @@ class TrickController extends AbstractController
             $manager->persist($group);
             $manager->flush();
 
-            return $this->redirectToRoute('group_modify', ['id' => $group->getIdgroup()]);
+            return $this->redirectToRoute('group_modify', ['id' => $group->getId()]);
         }
 
         return $this->render('trick/manage_groups.html.twig', [
             'formGroup' => $form->createView(),
-            'editMode' =>  $group->getIdgroup() !== null
+            'editMode' =>  $group->getId() !== null
         ]);
     }
 
@@ -62,30 +63,45 @@ class TrickController extends AbstractController
     {
         $trick = new Tricks();
 
-       /* $images = new Image();
-        $images->setUrl('http://placehold.it/300x200');
-        $images2 = new Image();
-        $images2->setUrl('http://placehold.it/300x200');
+        $originalTags = new ArrayCollection();
 
-        $trick->getImages()->add($images);
-        $trick->getImages()->add($images2);*/
+        // Create an ArrayCollection of the current Tag objects in the database
+//        foreach ($trick->getImages() as $tag) {
+//            $originalTags->add($tag);
+//        }
+
+        $form = $this->createForm(TrickType::class, $trick);
+
+
+        /* $images = new Image();
+         $images->setUrl('http://placehold.it/300x200');
+         $images2 = new Image();
+         $images2->setUrl('http://placehold.it/300x200');
+
+         $trick->getImages()->add($images);
+         $trick->getImages()->add($images2);*/
 
         //$trick->addImage($images);
 
-        $form = $this->createForm(TrickType::class, $trick);
-        $form->handleRequest($request);
+        //$form->handleRequest($request);
 
-        dump();
+        //dump($form->handleRequest($request));
 
-        if($form->isSubmitted() AND $form->isValid())
-        {
+        //if($form->isSubmitted() AND $form->isValid())
+       // {
+      /*  $group = new GroupOfTricks();
+            $trick->setName('Nouveau Trick');
+            $trick->setDescription('Content');
+            $trick->setDefaultImage('http://placehold.it/300x200');
             $trick->setCreatedAt(new \DateTime());
             $trick->setLastModifyAt(new \DateTime());
-            $manager->persist($trick);
+            $trick->setGroupOfTricks($group);*/
+            //dump($trick);
+            //$manager->persist($trick);
             $manager->flush();
 
-            return $this->redirectToRoute('trick', ['id' => $trick->getIdtricks()]);
-        }
+            //return $this->redirectToRoute('trick', ['id' => $trick->getIdtricks()]);
+        //}
 
 
         return $this->render('trick/add.html.twig', [

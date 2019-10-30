@@ -21,20 +21,17 @@ class TrickType extends AbstractType
             //->add('createdAt')
             //->add('lastModifyAt')
             ->add('defaultImage')
-            ->add('groupgroup', EntityType::class, [
+            ->add('groupOfTricks', EntityType::class, [
                 'class' => GroupOfTricks::class,
                 'choice_label' => 'name'
             ])
             ->add('images', CollectionType::class, [
                 "entry_type" => ImageType::class,
                 'entry_options' => ['label' => false],
-                'required' => false,
+                //'required' => false,
                 "allow_add"     => true,
                 "allow_delete"  => true,
-                "by_reference"  => false,
-                'attr' => [
-                    'accept' => '.png, .jpeg, .jpg'
-                ]
+                "by_reference"  => false
             ])
         ;
     }
