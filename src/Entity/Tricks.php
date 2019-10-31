@@ -44,7 +44,7 @@ class Tricks
     private $defaultImage;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\GroupOfTricks", inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\GroupOfTricks", inversedBy="tricks", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $groupOfTricks;
@@ -55,7 +55,7 @@ class Tricks
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="trick")
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", cascade={"persist"}, mappedBy="trick")
      */
     private $images;
 

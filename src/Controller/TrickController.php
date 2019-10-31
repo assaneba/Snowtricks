@@ -66,42 +66,36 @@ class TrickController extends AbstractController
         $originalTags = new ArrayCollection();
 
         // Create an ArrayCollection of the current Tag objects in the database
-//        foreach ($trick->getImages() as $tag) {
-//            $originalTags->add($tag);
-//        }
+        foreach ($trick->getImages() as $image) {
+            $originalTags->add($image);
+        }
 
         $form = $this->createForm(TrickType::class, $trick);
 
+        $form->handleRequest($request);
 
-        /* $images = new Image();
-         $images->setUrl('http://placehold.it/300x200');
-         $images2 = new Image();
-         $images2->setUrl('http://placehold.it/300x200');
 
-         $trick->getImages()->add($images);
-         $trick->getImages()->add($images2);*/
 
-        //$trick->addImage($images);
 
-        //$form->handleRequest($request);
 
-        //dump($form->handleRequest($request));
+        if($form->isSubmitted() AND $form->isValid())
+        {
 
-        //if($form->isSubmitted() AND $form->isValid())
-       // {
-      /*  $group = new GroupOfTricks();
-            $trick->setName('Nouveau Trick');
-            $trick->setDescription('Content');
-            $trick->setDefaultImage('http://placehold.it/300x200');
-            $trick->setCreatedAt(new \DateTime());
-            $trick->setLastModifyAt(new \DateTime());
-            $trick->setGroupOfTricks($group);*/
-            //dump($trick);
-            //$manager->persist($trick);
-            $manager->flush();
+       /* $trick->setName('Nouveau Trick');
+        $trick->setDescription('Content');
+        $trick->setDefaultImage('http://placehold.it/300x200');
+        $group = $trick->getGroupOfTricks();
+        $trick->setGroupOfTricks($group);*/
+
+       $trick->setCreatedAt(new \DateTime());
+       $trick->setLastModifyAt(new \DateTime());
+
+        //dump($trick);
+        $manager->persist($trick);
+        $manager->flush();
 
             //return $this->redirectToRoute('trick', ['id' => $trick->getIdtricks()]);
-        //}
+        }
 
 
         return $this->render('trick/add.html.twig', [

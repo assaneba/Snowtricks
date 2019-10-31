@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section>
+{{ form_start(formTrick) }}
+    {{ form_widget(formTrick) }}
+    <input type="submit" name="Envoi">
+{{ form_end(formTrick) }}
+    </section>
+
+{% endblock %}
