@@ -26,12 +26,20 @@ class TrickType extends AbstractType
                 'choice_label' => 'name'
             ])
             ->add('images', CollectionType::class, [
-                "entry_type" => ImageType::class,
+                'entry_type' => ImageType::class,
                 'entry_options' => ['label' => false],
                 'required' => false,
-                "allow_add"     => true,
-                "allow_delete"  => true,
-                "by_reference"  => false
+                'allow_add'     => true,
+                'allow_delete'  => true,
+                'by_reference'  => false
+            ])
+            ->add('videos', CollectionType::class, [
+                'entry_type' => VideoType::class,
+                'entry_options' => ['label' => false],
+                'required' => false,
+                'allow_add'     => true,
+                'allow_delete'  => true,
+                'by_reference'  => false
             ])
         ;
     }

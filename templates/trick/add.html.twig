@@ -56,6 +56,16 @@
                                 </div>
                                 {% endfor %}
                             </div>
+                            <div class="col-md-6 mt-4 videos" data-prototype="{{ form_widget(formTrick.videos.vars.prototype)|e('html_attr') }}">
+                                <label>Vidéos du trick :</label>
+
+                                {% for anVideo in formTrick.videos %}
+                                    <div class="form-group video-input" id="video-input">
+                                        <p>{{ form_row(anVideo.embed) }}</p>
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                {% endfor %}
+                            </div>
                             <div class="clearfix"></div>
                             <div class="col-lg-12 text-center">
                                 <div id="success"></div>
@@ -71,6 +81,7 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/add-delete-image.js') }}"></script>
+    <script src="{{ asset('js/add-delete-video.js') }}"></script>
 {% endblock %}
 
 {% endblock %}

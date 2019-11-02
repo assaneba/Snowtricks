@@ -69,13 +69,16 @@ class TrickController extends AbstractController
         foreach ($trick->getImages() as $image) {
             $originalTags->add($image);
         }
+        $originalTags2 = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($trick->getVideos() as $video) {
+            $originalTags2->add($video);
+        }
 
         $form = $this->createForm(TrickType::class, $trick);
 
         $form->handleRequest($request);
-
-
-
 
 
         if($form->isSubmitted() AND $form->isValid())
