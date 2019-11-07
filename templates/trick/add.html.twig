@@ -48,12 +48,12 @@
                             </div>
                             <div class="col-md-6 mt-4 images" data-prototype="{{ form_widget(formTrick.images.vars.prototype)|e('html_attr') }}">
                                     <label>D'autres images du trick :</label>
-                                {% for anImage in formTrick.images %}
+{#                                {% for anImage in formTrick.images %}#}
                                 <div class="form-group image-input">
-                                    <p>{{ form_row(anImage.url) }}</p>
+                                    <p>{{ form_widget(formTrick.images) }}</p>
                                     <p class="help-block text-danger"></p>
                                 </div>
-                                {% endfor %}
+{#                                {% endfor %}#}
                             </div>
                             <div class="col-md-6 mt-4 videos" data-prototype="{{ form_widget(formTrick.videos.vars.prototype)|e('html_attr') }}">
                                 <label>Vidéos du trick :</label>

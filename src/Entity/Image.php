@@ -17,7 +17,7 @@ class Image
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
     private $url;
 
@@ -36,12 +36,12 @@ class Image
         return $this->id;
     }
 
-    public function getUrl(): ?string
+    public function getUrl()
     {
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl($url)
     {
         $this->url = $url;
 

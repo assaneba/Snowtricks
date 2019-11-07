@@ -1,10 +1,10 @@
 <?php
 
-
 namespace App\Service;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 class UploadFile
 {
@@ -24,7 +24,7 @@ class UploadFile
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-            echo 'Erreur : '. $e;
+            // ...
         }
 
         return $fileName;
