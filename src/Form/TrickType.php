@@ -22,13 +22,15 @@ class TrickType extends AbstractType
             ->add('description', TextareaType::class)
             //->add('createdAt')
             //->add('lastModifyAt')
-            ->add('defaultImage')
+            ->add('defaultImage', FileType::class, [
+                'required' => false
+            ])
             ->add('groupOfTricks', EntityType::class, [
                 'class' => GroupOfTricks::class,
                 'choice_label' => 'name'
             ])
             ->add('images', CollectionType::class, [
-                'entry_type' => ImageType::class,
+                'entry_type' => ImagesType::class,
                 'entry_options' => ['label' => false],
                 'required' => false,
                 'allow_add'     => true,

@@ -39,7 +39,7 @@ class Tricks
     private $lastModifyAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
     private $defaultImage;
 

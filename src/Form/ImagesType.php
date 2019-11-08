@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
 
-class ImageType extends AbstractType
+class ImagesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

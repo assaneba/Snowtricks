@@ -6,7 +6,7 @@ use App\Entity\GroupOfTricks;
 use App\Entity\Image;
 use App\Entity\Tricks;
 use App\Form\GroupType;
-use App\Form\ImageType;
+use App\Form\ImagesType;
 use App\Form\TrickType;
 use App\Service\UploadFile;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -75,7 +75,6 @@ class TrickController extends AbstractController
 
         $imagesCollect = new ArrayCollection();
 
-
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
@@ -83,18 +82,20 @@ class TrickController extends AbstractController
 
         if($form->isSubmitted() AND $form->isValid())
         {
+            $defaultImage = $uploadFile->upload($form['defaultImage']->getData());
+            $trick->setDefaultImage($defaultImage);
+
             foreach ($trick->getImages() as $index => $illustration) {
                 $index = $index + 1;
                 $anImage = $files['images'][$index]['url'];
                 $newNameFile = $uploadFile->upload($anImage);
                 $illustration->setUrl($newNameFile);
-                $manager->persist($illustration);
+                $imagesCollect->add($illustration);
+                //$manager->persist($illustration);
             }
 
             $trick->setCreatedAt(new \DateTime());
             $trick->setLastModifyAt(new \DateTime());
-
-            dump($trick->getImages());
 
             //$manager->persist($trick);
             //$manager->flush();
