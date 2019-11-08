@@ -1,0 +1,16 @@
+/*!
+ * Costum style for Snowtricks
+ */
+
+#mainNav {
+    background-color: #495057;
+}
+
+section {
+    margin-top: 70px;
+}
+
+section#contact {
+    background-image: none;
+    background-color: #759ac1;
+}

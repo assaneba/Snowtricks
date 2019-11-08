@@ -1,0 +1,17 @@
+{
+  "name": "snowtricks",
+  "version": "0.1.0",
+  "engines": {
+    "node": "12.6.0",
+    "npm": "*"
+  },
+  "author": "Assane Ba",
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/assaneba/Snowtricks/blob/master/README.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/assaneba/Snowtricks.git"
+  }
+}

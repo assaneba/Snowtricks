@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un trick{% endblock %}
+
+{% form_theme formTrick 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+
+    <!-- Formulaire -->
+    <section class="page-section" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase">Formulaire d'ajout de trick</h2>
+                    <h3 class="section-subheading text-muted">Veuillez renseigner ce formulaire pour ajouter un nouveau trick</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+
+                    {{ form_start(formTrick) }}
+             {#       <form id="contactForm" name="sentMessage" novalidate="novalidate"> #}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+{#                                    <input class="form-control" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name.">#}
+                                    {{ form_row(formTrick.name, {'label': 'Nom', 'attr': { 'class': 'form-control', 'placeholder': 'Nom du trick ...', 'required': 'required' }}) }}
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(formTrick.defaultImage) }}
+                                    {#                                    <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">#}
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(formTrick.groupOfTricks, {'label': 'Groupe'}) }}
+                                    {#<input class="form-control" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">#}
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(formTrick.description, {'label': 'Description', 'attr': { 'class': 'form-control', 'placeholder': 'Description du trick ...', 'required': 'required' }}) }}
+                                    {#                                    <textarea class="form-control" id="message" placeholder="Your Message *" required="required" data-validation-required-message="Please enter a message."></textarea>#}
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-4 images" data-prototype="{{ form_widget(formTrick.images.vars.prototype)|e('html_attr') }}">
+                                    <label>D'autres images du trick :</label>
+{#                                {% for anImage in formTrick.images %}#}
+                                <div class="form-group image-input">
+                                    <p>{{ form_widget(formTrick.images) }}</p>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+{#                                {% endfor %}#}
+                            </div>
+                            <div class="col-md-6 mt-4 videos" data-prototype="{{ form_widget(formTrick.videos.vars.prototype)|e('html_attr') }}">
+                                <label>Vidéos du trick :</label>
+{#                                {% for anVideo in formTrick.videos %}#}
+                                    <div class="form-group video-input">
+                                        {{ form_widget(formTrick.videos) }}
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+{#                                {% endfor %}#}
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 text-center mt-5">
+                                <div id="success"></div>
+                                <button class="btn btn-primary btn-xl text-uppercase" type="submit">Créer !</button>
+                            </div>
+                        </div>
+                    {{ form_end(formTrick) }}
+                    {#</form>#}
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% block javascripts %}
+    <script src="{{ asset('js/add-delete-image.js') }}"></script>
+    <script src="{{ asset('js/add-delete-video.js') }}"></script>
+{% endblock %}
+
+{% endblock %}
