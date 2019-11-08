@@ -63,7 +63,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/ajout", name="trick_add")
      */
-    public function addTrick(ObjectManager $manager, Request $request, UploadFile $fileX)
+    public function addTrick(ObjectManager $manager, Request $request, UploadFile $uploadFile)
     {
         $trick = new Tricks();
 
@@ -75,36 +75,21 @@ class TrickController extends AbstractController
 
         $imagesCollect = new ArrayCollection();
 
-      /*  foreach($trick->getImages() as $anImage) {
-            //$file2 = $files['images'][$index]['file'];
-            $newNameFile = $file->upload($anImage);
-            //$imagesCollect->add($newNameFile);
-            //dump($illustration);
-            //$manager->persist($illustration);
-        }*/
 
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
-        //$files = $request->files->get('trick', $trick->getImages());
-        //$files = new UploadFile('\'%kernel.project_dir%/public/uploads/images\'');
-        //$files = $form[$trick->getImages()]->getData();
 
         $files = $request->files->get('trick', 'images');
 
         if($form->isSubmitted() AND $form->isValid())
         {
             foreach ($trick->getImages() as $index => $illustration) {
-                $index = 1;
+                $index = $index + 1;
                 $anImage = $files['images'][$index]['url'];
-                dump($anImage);
-                $newNameFile = $fileX->upload($anImage);
+                $newNameFile = $uploadFile->upload($anImage);
                 $illustration->setUrl($newNameFile);
-                //$manager->persist($illustration);
+                $manager->persist($illustration);
             }
-                /*$forUpload = $form[$trick->getImages()]->getData();
-                $uploadedImageName = $file->upload($forUpload);
-                $image->setUrl($uploadedImageName);*/
-                //$imagesCollect->add($uploadedImageName);
 
             $trick->setCreatedAt(new \DateTime());
             $trick->setLastModifyAt(new \DateTime());
