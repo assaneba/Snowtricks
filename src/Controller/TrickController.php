@@ -115,14 +115,28 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/{name}", name="trick_show")
      */
-    public function showTrick(Tricks $tricks)
+    public function showTrick(Tricks $tricks = null)
     {
-        //Affichage d'un trick
         if(!$tricks) {
-            $this->addFlash('info', 'Ce trick n\'existe pas !');
+            return $this->redirectToRoute('error_page');
         }
-        dump($tricks->getDefaultImage());
+
         return $this->render('trick/show.html.twig', [
+            'trick' => $tricks,
+        ]);
+    }
+
+    /**
+     * @Route("/trick/edit/{name}", name="trick_edit")
+     */
+    public function editTrick(Tricks $tricks)
+    {
+        if(!$tricks) {
+            return $this->redirectToRoute('error_page');
+        }
+
+
+        return $this->render('trick/edit.html.twig', [
             'trick' => $tricks,
         ]);
     }

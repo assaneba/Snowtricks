@@ -17,4 +17,14 @@ class HomeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/not-found", name="error_page")
+     */
+    public function errorPage()
+    {
+        return $this->render('error404.html.twig', [
+            'controller_name' => 'annuaire Snowtricks',
+        ]);
+    }
+
 }
