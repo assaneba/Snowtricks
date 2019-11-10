@@ -11,6 +11,7 @@ use App\Form\TrickType;
 use App\Service\UploadFile;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use function dump;
 use phpDocumentor\Reflection\Types\Object_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -70,6 +71,7 @@ class TrickController extends AbstractController
         $videoCollect = new ArrayCollection();
 
         foreach ($trick->getVideos() as $video) {
+            $video->setEmbed('test1');
             $videoCollect->add($video);
         }
 
@@ -82,6 +84,7 @@ class TrickController extends AbstractController
 
         if($form->isSubmitted() AND $form->isValid())
         {
+            dump($trick->getVideos());
             $defaultImage = $uploadFile->upload($form['defaultImage']->getData());
             $trick->setDefaultImage($defaultImage);
 
@@ -91,7 +94,6 @@ class TrickController extends AbstractController
                 $newNameFile = $uploadFile->upload($anImage);
                 $illustration->setUrl($newNameFile);
                 $imagesCollect->add($illustration);
-                //$manager->persist($illustration);
             }
 
             $trick->setCreatedAt(new \DateTime());
@@ -100,12 +102,28 @@ class TrickController extends AbstractController
             //$manager->persist($trick);
             //$manager->flush();
 
-            //return $this->redirectToRoute('trick', ['id' => $trick->getIdtricks()]);
+            //return $this->redirectToRoute('trick_show', ['name' => $trick->getName()]);
         }
 
         return $this->render('trick/add.html.twig', [
             'formTrick' => $form->createView(),
             //'id' => null
+        ]);
+    }
+
+
+    /**
+     * @Route("/trick/{name}", name="trick_show")
+     */
+    public function showTrick(Tricks $tricks)
+    {
+        //Affichage d'un trick
+        if(!$tricks) {
+            $this->addFlash('info', 'Ce trick n\'existe pas !');
+        }
+        dump($tricks->getDefaultImage());
+        return $this->render('trick/show.html.twig', [
+            'trick' => $tricks,
         ]);
     }
 
