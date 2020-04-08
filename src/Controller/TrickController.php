@@ -7,6 +7,7 @@ use App\Entity\Image;
 use App\Entity\Tricks;
 use App\Form\GroupType;
 use App\Form\ImagesType;
+use App\Form\TrickEditType;
 use App\Form\TrickType;
 use App\Service\UploadFile;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,6 +16,7 @@ use function dump;
 use phpDocumentor\Reflection\Types\Object_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,7 +73,7 @@ class TrickController extends AbstractController
         $videoCollect = new ArrayCollection();
 
         foreach ($trick->getVideos() as $video) {
-            $video->setEmbed('test1');
+            //$video->setEmbed('test1');
             $videoCollect->add($video);
         }
 
@@ -82,9 +84,9 @@ class TrickController extends AbstractController
 
         $files = $request->files->get('trick', 'images');
 
+
         if($form->isSubmitted() AND $form->isValid())
         {
-            dump($trick->getVideos());
             $defaultImage = $uploadFile->upload($form['defaultImage']->getData());
             $trick->setDefaultImage($defaultImage);
 
@@ -99,10 +101,10 @@ class TrickController extends AbstractController
             $trick->setCreatedAt(new \DateTime());
             $trick->setLastModifyAt(new \DateTime());
 
-            //$manager->persist($trick);
-            //$manager->flush();
+            $manager->persist($trick);
+            $manager->flush();
 
-            //return $this->redirectToRoute('trick_show', ['name' => $trick->getName()]);
+            return $this->redirectToRoute('trick_show', ['name' => $trick->getName()]);
         }
 
         return $this->render('trick/add.html.twig', [
@@ -122,22 +124,58 @@ class TrickController extends AbstractController
         }
 
         return $this->render('trick/show.html.twig', [
-            'trick' => $tricks,
+            'trick' => $tricks
         ]);
     }
 
     /**
-     * @Route("/trick/edit/{name}", name="trick_edit")
+     * @Route("/trick/edit/{id}", name="trick_edit")
      */
-    public function editTrick(Tricks $tricks)
+    public function editTrick(Tricks $tricks = null, Request $request, ObjectManager $manager, UploadFile $uploadFile)
     {
         if(!$tricks) {
             return $this->redirectToRoute('error_page');
         }
 
+       $videoCollect = new ArrayCollection();
+        foreach ($tricks->getVideos() as $video) {
+            //$video->setEmbed('test1');
+            $videoCollect->add($video);
+        }
+
+        $imagesCollect = new ArrayCollection();
+        foreach ($tricks->getImages() as $image) {
+            $imagesCollect->add($image);
+        }
+
+     /*  $tricks->setDefaultImage(
+            new File($this->getParameter('images_directory').'/'.$tricks->getDefaultImage())
+        );*/
+
+        $form = $this->createForm(TrickType::class, $tricks);
+        $form->handleRequest($request);
+
+        dump($form);
+
+        //$files = $request->files->get('trick', 'images');
+
+        if($form->isSubmitted() AND $form->isValid())
+        {
+            //$defaultImage = $uploadFile->upload($form['defaultImage']->getData());
+            //$tricks->setDefaultImage($defaultImage);
+
+            dump($tricks);
+
+            $manager->persist($tricks);
+            $manager->flush();
+            //dump($form);
+        }
+
+        //$files = $request->files->get('trick', 'images');
 
         return $this->render('trick/edit.html.twig', [
             'trick' => $tricks,
+            'form' => $form->createView()
         ]);
     }
 

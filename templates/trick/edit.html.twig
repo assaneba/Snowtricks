@@ -3,12 +3,14 @@
 {% block title %} trick - {{ trick.name }} {% endblock %}
 
 {% block header %}
+
+    {{ form_start(form) }}
     <!-- Header -->
-    <header class="masthead" style="background-image: url({{ asset('uploads/images/') }} {{ trick.defaultImage }}) !important">
+    <header class="masthead" style="background-image: url({{ asset('uploads/images/')}}{{ trick.defaultImage }}) !important">
         <div class="container">
             <div class="intro-text">
                 <div class="edit-delete-btn">
-                    <a href="#" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>
+                    <a href="{{ form.defaultImage.vars.id }}" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>
                     <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                 </div>
                 <div class="intro-lead-in">Snowtricks</div>
@@ -28,12 +30,20 @@
                 <div class="carousel-inner row w-100 mx-auto" role="listbox">
                     {% for image in trick.images %}
                         <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3 {% if loop.first %}active{% endif %}">
-                            <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/') }}{{ image.url }}" alt="{{ image.url }}">
+                            <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/') }}{{ image.url }}">
+                            <div class="edit-delete-btn float-right">
+                                <a href="path(''{{ image.id }})" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>
+                                <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            </div>
                         </div>
                     {% endfor %}
                     {% for video in trick.videos %}
                         <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3">
                             <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.embed }}" allowfullscreen></iframe>
+                            <div class="edit-delete-btn float-right">
+                                <a href="#" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>
+                                <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -47,28 +57,30 @@
                 </a>
             </div>
         </div>
-        </div>
     </section>
 
     <section class="page-section">
         <div class="container">
-            <h2 class="text-center mb-5">Description de la figure</h2>
-            <p>{{ trick.description }}</p>
+            <h2 class="text-center mb-5">Présentation de la figure</h2>
 
-            <div class="mt-5">
-                <ul class="list-group list-group-horizontal-md">
-                    <li class="list-group-item">Créé le {{ trick.createdAt | date("d/m/Y à H:m") }}</li>
-                    <li class="list-group-item">{{ trick.groupOfTricks.name }}</li>
-                    {% if trick.lastModifyAt %}
-                        <li class="list-group-item">Dernière modification {{ trick.lastModifyAt | date("d/m/Y à H:m") }}</li>
-                    {% endif %}
-                </ul>
+            <p>{{ form_row(form.name, {'label': 'Nom du trick', 'attr': { 'class': 'form-control', 'required': 'required' }}) }}</p>
+            <p>{{ form_row(form.description, {'label': 'Modifier la description', 'attr': { 'class': 'form-control', 'required': 'required' }}) }}</p>
+
+            <div class="form-group col-md-3">
+                {{ form_row(form.groupOfTricks, {'label': 'Groupe'}) }}
+                <p class="help-block text-danger"></p>
             </div>
-
-
         </div>
-
+        <div class="float-right mr-5">
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+            <a href="#" role="button" class="btn btn-danger">Supprimer cette figure</a>
+        </div>
     </section>
+
+    {{ form_end(form) }}
+{#
+    {{ form_end(form, {'render_rest': false}) }}
+#}
 
 {% endblock %}
 
