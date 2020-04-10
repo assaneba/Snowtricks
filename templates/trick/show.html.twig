@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} trick - {{ trick.name }} {% endblock %}
+
+{% block header %}
+        <!-- Header -->
+        <header class="masthead" style="background-image: url({{ asset('uploads/images/') }} {{ trick.defaultImage }}) !important">
+            <div class="container">
+                <div class="intro-text">
+                    <div class="intro-lead-in">Snowtricks</div>
+                    <div class="intro-heading text-uppercase">{{ trick.name }}</div>
+                    <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">En savoir plus</a>
+                </div>
+            </div>
+        </header>
+{% endblock %}
+
+{% block body %}
+
+    <!-- Images and videos section -->
+    <section class="page-section" id="gallerie">
+            <div class="container-fluid">
+                <div id="carousel-example" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner row w-100 mx-auto" role="listbox">
+                        {% for image in trick.images %}
+                        <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3 {% if loop.first %}active{% endif %}">
+                            <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/') }}{{ image.url }}" alt="{{ image.url }}">
+                        </div>
+                        {% endfor %}
+                        {% for video in trick.videos %}
+                            <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3">
+                                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.embed }}" allowfullscreen></iframe>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carousel-example" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-example" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Description de la figure</h2>
+            <p>{{ trick.description }}</p>
+
+            <div class="mt-5">
+                <ul class="list-group list-group-horizontal-md">
+                    <li class="list-group-item">Créé le {{ trick.createdAt | date("d/m/Y à H:m") }}</li>
+                    <li class="list-group-item">{{ trick.groupOfTricks.name }}</li>
+                    {% if trick.lastModifyAt %}
+                        <li class="list-group-item">Dernière modification {{ trick.lastModifyAt | date("d/m/Y à H:m") }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+
+        </div>
+
+    </section>
+
+{% endblock %}
+
+{% block javascprits %}
+    <script src="{{ asset('js/carousel-trick.js') }}"></script>
+{% endblock %}
