@@ -12,7 +12,7 @@ class TrickEditType extends AbstractType
     {
         $builder
             //->add('lastModifyAt')
-            ->remove('defaultImage')
+            //->remove('defaultImage')
             ->remove('images')
             ->remove('videos')
         ;

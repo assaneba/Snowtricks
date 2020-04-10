@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use function unlink;
 
 class TrickController extends AbstractController
 {
@@ -30,7 +31,7 @@ class TrickController extends AbstractController
      */
     public function index()
     {
-        return $this->render('trick/index.html.twig', [
+        return $this->render('trick/delete-default-image.html.twig', [
             'controller_name' => 'TrickController',
         ]);
     }
@@ -154,16 +155,28 @@ class TrickController extends AbstractController
         $form = $this->createForm(TrickEditType::class, $tricks);
         $form->handleRequest($request);
 
-        dump($form);
+        dump($tricks);
+
 
         //$files = $request->files->get('trick', 'images');
 
         if($form->isSubmitted() AND $form->isValid())
         {
-            //$defaultImage = $uploadFile->upload($form['defaultImage']->getData());
-            //$tricks->setDefaultImage($defaultImage);
+            // Vérifier si une image par défaut a été soumise et supprimer l'ancienne
 
-            dump($tricks);
+            if($form['defaultImage']->getData())
+            {
+                $newDefaultImage = $uploadFile->upload($form['defaultImage']->getData());
+                $previousImage = $tricks->getDefaultImage();
+                if($previousImage != 'home_img.jpg')
+                {
+                    unlink($this->getParameter('images_directory').'/'.$previousImage);
+                }
+                $tricks->setDefaultImage($newDefaultImage);
+
+            }
+
+            //dump($form['defaultImage']->getData());
 
             $manager->persist($tricks);
             $manager->flush();

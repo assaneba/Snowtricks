@@ -6,12 +6,20 @@
 
     {{ form_start(form) }}
     <!-- Header -->
-    <header class="masthead" style="background-image: url({{ asset('uploads/images/')}}{{ trick.defaultImage }}) !important">
+    <header class="masthead" style="background-image: url({{ asset('uploads/images/')}}{{ trick.defaultImage }})">
         <div class="container">
             <div class="intro-text">
                 <div class="edit-delete-btn">
-                    <a href="{{ trick.defaultImage }}" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>
-                    <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                    <!-- Button trigger modify Default image -->
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modifyDefaultImage">
+                        <i class="fas fa-pen-square"></i>
+                    </button>
+
+                    <!-- Button trigger delete Default image -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDefaultImage">
+                        <i class="fas fa-trash"></i>
+                        {#                    <a href="{{ trick.defaultImage }}" class="btn btn-info" role="button"></a>#}
+                    </button>
                 </div>
                 <div class="intro-lead-in">Snowtricks</div>
                 <div class="intro-heading text-uppercase">{{ trick.name }}</div>
@@ -77,13 +85,57 @@
         </div>
     </section>
 
+    <!-- Modal Modify Default image -->
+    <div class="modal fade" id="modifyDefaultImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modifier l'image à la une</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_row(form.defaultImage) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Confirmer</button>
+{#                    <a href="{{ path('edit-default-image')}}" type="button" class="btn btn-primary">Confirmer</a>#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Default image -->
+    <div class="modal fade" id="deleteDefaultImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Supprimer  l'image à la une</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûr de vouloir supprimer l'image ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <a href="{{ path('delete-default-image', {'id': trick.id})}}" type="button" class="btn btn-danger">Confirmer suppression</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{ form_end(form) }}
-{#
-    {{ form_end(form, {'render_rest': false}) }}
-#}
+
+    {#
+        {{ form_end(form, {'render_rest': false}) }}
+    #}
 
 {% endblock %}
 
 {% block javascprits %}
-    <script src="{{ asset('js/carousel-trick.js') }}"></script>
+    <script src="{{ asset('js/carousel-trick.js')}}"></script>
 {% endblock %}
