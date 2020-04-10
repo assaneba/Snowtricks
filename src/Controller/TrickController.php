@@ -31,7 +31,7 @@ class TrickController extends AbstractController
      */
     public function index()
     {
-        return $this->render('trick/delete-default-image.html.twig', [
+        return $this->render('trick/index-image.html.twig', [
             'controller_name' => 'TrickController',
         ]);
     }
@@ -155,19 +155,21 @@ class TrickController extends AbstractController
         $form = $this->createForm(TrickEditType::class, $tricks);
         $form->handleRequest($request);
 
-        dump($tricks);
+       // $formImage = $this->createForm(ImagesType::class, $image);
+       // $formImage->handleRequest($request);
 
+        // dump($tricks->getImages());
 
         //$files = $request->files->get('trick', 'images');
 
         if($form->isSubmitted() AND $form->isValid())
         {
             // Vérifier si une image par défaut a été soumise et supprimer l'ancienne
-
             if($form['defaultImage']->getData())
             {
                 $newDefaultImage = $uploadFile->upload($form['defaultImage']->getData());
                 $previousImage = $tricks->getDefaultImage();
+
                 if($previousImage != 'home_img.jpg')
                 {
                     unlink($this->getParameter('images_directory').'/'.$previousImage);
@@ -187,7 +189,7 @@ class TrickController extends AbstractController
 
         return $this->render('trick/edit.html.twig', [
             'trick' => $tricks,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 

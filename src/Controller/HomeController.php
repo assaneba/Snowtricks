@@ -12,7 +12,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render('home/delete-default-image.html.twig', [
+        return $this->render('home/index-image.html.twig', [
             'controller_name' => 'annuaire Snowtricks',
         ]);
     }

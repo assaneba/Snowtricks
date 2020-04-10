@@ -40,8 +40,18 @@
                         <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3 {% if loop.first %}active{% endif %}">
                             <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/') }}{{ image.url }}">
                             <div class="edit-delete-btn float-right">
-                                <a href="path(''{{ image.id }})" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>
-                                <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+
+                                <!-- Button trigger modify an image -->
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modifyAnImage">
+                                    <i class="fas fa-pen-square"></i>
+{#                                    <a href="{{ path('modify-an-image', {'idTrick' : trick.id, 'idImage' : image.id}) }}" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>#}
+                                </button>
+
+                                <!-- Button trigger delete an image -->
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAnImage">
+                                    <i class="fas fa-trash"></i>
+{#                                    <a href="{{ path('delete-an-image', {'id' : image.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>#}
+                                </button>
                             </div>
                         </div>
                     {% endfor %}
@@ -49,8 +59,18 @@
                         <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3">
                             <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.embed }}" allowfullscreen></iframe>
                             <div class="edit-delete-btn float-right">
-                                <a href="#" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>
-                                <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+
+                                <!-- Button trigger modify a video -->
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modifyAVideo">
+                                    <i class="fas fa-pen-square"></i>
+{#                                    <a href="#" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>#}
+                                </button>
+
+                                <!-- Button trigger delete a video -->
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAVideo">
+                                    <i class="fas fa-trash"></i>
+{#                                    <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>#}
+                                </button>
                             </div>
                         </div>
                     {% endfor %}
@@ -123,6 +143,90 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                         <a href="{{ path('delete-default-image', {'id': trick.id})}}" type="button" class="btn btn-danger">Confirmer suppression</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Modify an image -->
+    <div class="modal fade" id="modifyAnImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modifier l'image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+{#                    {{ form_row(formImage) }}#}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete an image -->
+    <div class="modal fade" id="deleteAnImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Supprimer l'image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûr de vouloir supprimer l'image ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger">Confirmer la suppression</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Modify a video -->
+    <div class="modal fade" id="modifyAVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modifier l'id de la vidéo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {#                    {{ form_row(formImage) }}#}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete a video -->
+    <div class="modal fade" id="deleteAVideo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Supprimer la vidéo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûr de vouloir supprimer la vidéo ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger">Confirmer la suppression</button>
                 </div>
             </div>
         </div>
