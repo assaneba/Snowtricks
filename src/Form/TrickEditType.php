@@ -11,8 +11,10 @@ class TrickEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastModifyAt')
+            //->add('lastModifyAt')
             ->remove('defaultImage')
+            ->remove('images')
+            ->remove('videos')
         ;
     }
 

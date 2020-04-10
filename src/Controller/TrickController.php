@@ -64,6 +64,20 @@ class TrickController extends AbstractController
     }
 
     /**
+     * @Route("/trick/{name}", name="trick_show")
+     */
+    public function showTrick(Tricks $tricks = null)
+    {
+        if(!$tricks) {
+            return $this->redirectToRoute('error_page');
+        }
+
+        return $this->render('trick/show.html.twig', [
+            'trick' => $tricks
+        ]);
+    }
+
+    /**
      * @Route("/trick/ajout", name="trick_add")
      */
     public function addTrick(ObjectManager $manager, Request $request, UploadFile $uploadFile)
@@ -113,21 +127,6 @@ class TrickController extends AbstractController
         ]);
     }
 
-
-    /**
-     * @Route("/trick/{name}", name="trick_show")
-     */
-    public function showTrick(Tricks $tricks = null)
-    {
-        if(!$tricks) {
-            return $this->redirectToRoute('error_page');
-        }
-
-        return $this->render('trick/show.html.twig', [
-            'trick' => $tricks
-        ]);
-    }
-
     /**
      * @Route("/trick/edit/{id}", name="trick_edit")
      */
@@ -152,7 +151,7 @@ class TrickController extends AbstractController
             new File($this->getParameter('images_directory').'/'.$tricks->getDefaultImage())
         );*/
 
-        $form = $this->createForm(TrickType::class, $tricks);
+        $form = $this->createForm(TrickEditType::class, $tricks);
         $form->handleRequest($request);
 
         dump($form);
