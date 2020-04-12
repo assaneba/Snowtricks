@@ -65,7 +65,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/{name}", name="trick_show")
+     * @Route("/trick/{name}/view", name="trick_show")
      */
     public function showTrick(Tricks $tricks = null)
     {
@@ -79,7 +79,7 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/ajout", name="trick_add")
+     * @Route("/trick/add", name="trick_add")
      */
     public function addTrick(ObjectManager $manager, Request $request, UploadFile $uploadFile)
     {
