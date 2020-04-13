@@ -45,16 +45,15 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="login")
      */
-    public function login(Request $request)
+    public function login()
     {
-        $user = new User();
 
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        return $this->render('security/login.html.twig', [
-            'form' => $form->createView()
-        ]);
+        return $this->render('security/login.html.twig');
     }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout() {}
 
 }
