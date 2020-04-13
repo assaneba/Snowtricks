@@ -22,7 +22,7 @@ class UserController extends AbstractController
     {
         $users = $manager->getRepository(User::class)->findAll();
 
-        dump($users);
+        //dump($users);
 
         return $this->render('user/manage-users.html.twig', [
             'users' => $users,
@@ -35,15 +35,15 @@ class UserController extends AbstractController
      * @isGranted("ROLE_ADMIN", message="Vous devez vous admin pour modifier cette section !")
      *
      */
-    public function deleteAUser(ObjectManager $manager)
+    public function deleteAUser(ObjectManager $manager, User $user)
     {
-        $users = $manager->getRepository(User::class)->findAll();
+        if($user)
+        {
+            $manager->remove($user);
+            $manager->flush();
+        }
 
-        dump($users);
-
-        return $this->render('user/manage-users.html.twig', [
-            'users' => $users,
-        ]);
+        return $this->redirectToRoute('manage-users');
     }
 
 }
