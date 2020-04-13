@@ -45,17 +45,17 @@
                         </li>
                         {% if not app.user %}
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="{{ path('login') }}">Connexion</a>
+                            <a class="nav-link js-scroll-trigger" href="{{ path('app_login') }}">Connexion</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link js-scroll-trigger" href="{{ path('register') }}">S'inscrire</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="{{ path('logout') }}">Hello {{ app.user.username }} !</a>
+                            <a class="nav-link js-scroll-trigger text-success" href="{{ path('app_logout') }}">Hello {{ app.user.username }} !</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="{{ path('logout') }}">Déconnexion</a>
+                            <a class="nav-link js-scroll-trigger" href="{{ path('app_logout') }}">Déconnexion</a>
                         </li>
                         {% endif %}
 
