@@ -2,7 +2,6 @@
 
 {% block title %}Gestion des utilisateurs{% endblock %}
 
-{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
 
 {% block body %}
 
@@ -38,7 +37,14 @@
                                 <td>{{ user.firstName }}</td>
                                 <td>{{ user.lastName }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.role }}</td>
+                                <td>
+                                    {{ user.role }}
+                                    {% if user.role == 'ROLE_USER' %}
+                                        <br><a href="{{ path('change-role', {'id' : user.id}) }}" type="button" class="">faire admin</a>
+                                    {% elseif user.role == 'ROLE_ADMIN' %}
+                                        <br><a href="{{ path('change-role', {'id' : user.id}) }}" type="button" class="">faire user simple</a>
+                                    {% endif %}
+                                </td>
                                 <td> <a href="{{ path('delete-user', { 'id' : user.id }) }}" class="btn btn-danger" type="button">Supprimer</a> </td>
                             </tr>
                         {% endfor %}

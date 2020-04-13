@@ -46,4 +46,28 @@ class UserController extends AbstractController
         return $this->redirectToRoute('manage-users');
     }
 
+    /**
+     * @Route("/{id}/change-role", name="change-role")
+     *
+     * @isGranted("ROLE_ADMIN", message="Vous devez vous admin pour modifier cette section !")
+     *
+     */
+    public function changeRole(ObjectManager $manager, User $user)
+    {
+        if($user)
+        {
+            if($user->getRole() == 'ROLE_USER')
+            {
+                $user->setRole('ROLE_ADMIN');
+            }
+            else {
+                $user->setRole('ROLE_USER');
+            }
+            $manager->persist($user);
+            $manager->flush();
+        }
+
+        return $this->redirectToRoute('manage-users');
+    }
+
 }
