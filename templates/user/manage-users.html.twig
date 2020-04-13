@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{#{% form_theme form 'bootstrap_4_layout.html.twig' %}#}
+
+{% block body %}
+
+    <!-- Formulaire -->
+    <section class="page-section" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase">
+                        Liste des utilisateurs
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <table class="table table-hover" id="sortAction">
+                        <thead>
+                        <tr class="text-white">
+                            <th scope="col">#</th>
+                            <th scope="col">Login</th>
+                            <th scope="col">Prénom(s)</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ user.login }}</td>
+                                <td>{{ user.firstName }}</td>
+                                <td>{{ user.lastName }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.role }}</td>
+                                <td> <a href="{{ path('delete-user', { 'id' : user.id }) }}" class="btn btn-danger" type="button">Supprimer</a> </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {#{{ form_start(formGroup) }}
+
+                    {{ form_row(formGroup.name, {'attr':{ 'placeholder': 'Renseigner le nom du groupe ...' }}) }}
+
+                    <div class="col-lg-12 text-center">
+                        <div id="success"></div>
+                        <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">
+                            {% if editMode %}
+                                Modifier
+                            {% else %}
+                                Créer le groupe
+                            {% endif %}
+                        </button>
+                    </div>
+
+                    {{ form_end(formGroup) }}
+#}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

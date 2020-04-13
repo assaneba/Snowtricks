@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use function unlink;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class TrickController extends AbstractController
 {
@@ -37,8 +38,10 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/ajout-groupe", name="group_add")
-     * @Route("/trick/edit-groupe/{id}", name="group_modify")
+     * @Route("/trick/group-add", name="group_add")
+     * @Route("/trick/{id}/group-edit", name="group_modify")
+     *
+     * @isGranted("ROLE_ADMIN", message="Vous devez être admin pour modifier cette section ! ")
      */
     public function addGroup(Request $request, ObjectManager $manager, GroupOfTricks $group = null)
     {
@@ -80,6 +83,8 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/trick/add", name="trick_add")
+     *
+     * @isGranted("ROLE_USER", message="Vous devez vous connecter pour ajouter un Trick !")
      */
     public function addTrick(ObjectManager $manager, Request $request, UploadFile $uploadFile)
     {
@@ -129,7 +134,9 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/edit/{id}", name="trick_edit")
+     * @Route("/trick/{id}/edit", name="trick_edit")
+     *
+     * @isGranted("ROLE_USER", message="Vous devez être connecté pour modifier cette section ! ")
      */
     public function editTrick(Tricks $tricks = null, Request $request, ObjectManager $manager, UploadFile $uploadFile)
     {
