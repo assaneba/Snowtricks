@@ -20,9 +20,8 @@ class UserController extends AbstractController
      */
     public function manageUsers(ObjectManager $manager)
     {
-        $users = $manager->getRepository(User::class)->findAll();
-
-        //dump($users);
+        $users = $manager->getRepository(User::class)
+                         ->findAllWithoutSuperAdmin();
 
         return $this->render('user/manage-users.html.twig', [
             'users' => $users,
@@ -63,7 +62,7 @@ class UserController extends AbstractController
             else {
                 $user->setRole('ROLE_USER');
             }
-            $manager->persist($user);
+            //$manager->persist($user);
             $manager->flush();
         }
 
