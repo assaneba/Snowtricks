@@ -20,17 +20,14 @@ class RegisterController extends AbstractController
     public function registration(Request $request, ObjectManager $manager, UploadFile $uploadFile, UserPasswordEncoderInterface $encoder)
     {
         $user = new User();
-
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() AND $form->isValid())
-        {
+        if ($form->isSubmitted() AND $form->isValid()) {
             $user->setRole('ROLE_USER');
             $user->setCreatedAt(new \DateTime());
 
-            if($form['profileImage']->getData())
-            {
+            if ($form['profileImage']->getData()) {
                 $profileImagePath = $uploadFile->upload($form['profileImage']->getData());
                 $user->setProfileImage($profileImagePath);
             }
@@ -40,8 +37,6 @@ class RegisterController extends AbstractController
 
             $hashedPassword = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
-
-            //dump($user);
             $manager->persist($user);
             $manager->flush();
 

@@ -40,21 +40,17 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/group-add", name="group_add")
      * @Route("/trick/{id}/group-edit", name="group_modify")
-     *
      * @isGranted("ROLE_ADMIN", message="Vous devez être admin pour modifier cette section ! ")
      */
     public function addGroup(Request $request, ObjectManager $manager, GroupOfTricks $group = null)
     {
-        if (!$group)
-        {
+        if (!$group) {
             $group = new GroupOfTricks();
         }
         $form = $this->createForm(GroupType::class, $group);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() AND $form->isValid())
-        {
-            //dump();
+        if ($form->isSubmitted() AND $form->isValid()) {
             $manager->persist($group);
             $manager->flush();
 
@@ -72,7 +68,7 @@ class TrickController extends AbstractController
      */
     public function showTrick(Tricks $tricks = null)
     {
-        if(!$tricks) {
+        if (!$tricks) {
             return $this->redirectToRoute('error_page');
         }
 
@@ -83,30 +79,23 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/trick/add", name="trick_add")
-     *
      * @isGranted("ROLE_USER", message="Vous devez vous connecter pour ajouter un Trick !")
      */
     public function addTrick(ObjectManager $manager, Request $request, UploadFile $uploadFile)
     {
         $trick = new Tricks();
-
+        $imagesCollect = new ArrayCollection();
         $videoCollect = new ArrayCollection();
 
         foreach ($trick->getVideos() as $video) {
-            //$video->setEmbed('test1');
             $videoCollect->add($video);
         }
 
-        $imagesCollect = new ArrayCollection();
-
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
-
         $files = $request->files->get('trick', 'images');
 
-
-        if($form->isSubmitted() AND $form->isValid())
-        {
+        if ($form->isSubmitted() AND $form->isValid()) {
             $defaultImage = $uploadFile->upload($form['defaultImage']->getData());
             $trick->setDefaultImage($defaultImage);
 
@@ -129,13 +118,11 @@ class TrickController extends AbstractController
 
         return $this->render('trick/add.html.twig', [
             'formTrick' => $form->createView(),
-            //'id' => null
         ]);
     }
 
     /**
      * @Route("/trick/{id}/edit", name="trick_edit")
-     *
      * @isGranted("ROLE_USER", message="Vous devez être connecté pour modifier cette section ! ")
      */
     public function editTrick(Tricks $tricks = null, Request $request, ObjectManager $manager, UploadFile $uploadFile)
@@ -144,55 +131,36 @@ class TrickController extends AbstractController
             return $this->redirectToRoute('error_page');
         }
 
-       $videoCollect = new ArrayCollection();
+        $imagesCollect = new ArrayCollection();
+        $videoCollect = new ArrayCollection();
+
         foreach ($tricks->getVideos() as $video) {
-            //$video->setEmbed('test1');
             $videoCollect->add($video);
         }
 
-        $imagesCollect = new ArrayCollection();
         foreach ($tricks->getImages() as $image) {
             $imagesCollect->add($image);
         }
 
-     /*  $tricks->setDefaultImage(
-            new File($this->getParameter('images_directory').'/'.$tricks->getDefaultImage())
-        );*/
-
         $form = $this->createForm(TrickEditType::class, $tricks);
         $form->handleRequest($request);
 
-       // $formImage = $this->createForm(ImagesType::class, $image);
-       // $formImage->handleRequest($request);
-
-        // dump($tricks->getImages());
-
-        //$files = $request->files->get('trick', 'images');
-
-        if($form->isSubmitted() AND $form->isValid())
-        {
+        if ($form->isSubmitted() AND $form->isValid()) {
             // Vérifier si une image par défaut a été soumise et supprimer l'ancienne
-            if($form['defaultImage']->getData())
-            {
+            if ($form['defaultImage']->getData()) {
                 $newDefaultImage = $uploadFile->upload($form['defaultImage']->getData());
                 $previousImage = $tricks->getDefaultImage();
 
-                if($previousImage != 'home_img.jpg')
-                {
+                if ($previousImage != 'home_img.jpg') {
                     unlink($this->getParameter('images_directory').'/'.$previousImage);
                 }
+
                 $tricks->setDefaultImage($newDefaultImage);
-
             }
-
-            //dump($form['defaultImage']->getData());
 
             $manager->persist($tricks);
             $manager->flush();
-            //dump($form);
         }
-
-        //$files = $request->files->get('trick', 'images');
 
         return $this->render('trick/edit.html.twig', [
             'trick' => $tricks,
