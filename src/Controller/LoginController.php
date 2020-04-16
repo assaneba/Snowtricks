@@ -70,7 +70,7 @@ class LoginController extends AbstractController
             $url = $this->generateUrl('app_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
 
             $message = (new \Swift_Message('Mot de passe oublié'))
-                ->setFrom('assanetb@gmail.com')
+                ->setFrom('test.dev.assanetb@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody(
                     "Cliquez sur le lien pour modifer votre mot de passe : " . $url,
@@ -79,9 +79,7 @@ class LoginController extends AbstractController
 
             $mailer->send($message);
 
-            $this->addFlash('notice', 'Mail envoyé');
-
-            dump($mailer->send($message));
+            $this->addFlash('success', 'Mail envoyé');
 
             return $this->redirectToRoute('home');
         }
@@ -102,16 +100,16 @@ class LoginController extends AbstractController
 
             if ($user === null) {
                 $this->addFlash('danger', 'Token Inconnu');
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('home');
             }
 
             $user->setResetToken(null);
             $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('password')));
             $entityManager->flush();
 
-            $this->addFlash('notice', 'Mot de passe mis à jour');
+            $this->addFlash('success', 'Mot de passe mis à jour');
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('home');
         } else {
 
             return $this->render('security/reset_password.html.twig', ['token' => $token]);
