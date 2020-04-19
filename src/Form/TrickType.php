@@ -23,7 +23,8 @@ class TrickType extends AbstractType
             //->add('createdAt')
             //->add('lastModifyAt')
             ->add('defaultImage', FileType::class, [
-                'required' => true
+                'required' => false,
+                'mapped' => false
             ])
             ->add('groupOfTricks', EntityType::class, [
                 'class' => GroupOfTricks::class,

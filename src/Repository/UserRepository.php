@@ -19,6 +19,19 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function findAllWithoutSuperAdmin()
+    {
+
+        $superAdmin = 'ROLE_SUPER_ADMIN';
+        $qb = $this->createQueryBuilder('user')
+            ->where('user.role <> :superAdmin')
+            ->setParameter('superAdmin', $superAdmin);
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

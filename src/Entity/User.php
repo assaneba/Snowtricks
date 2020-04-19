@@ -5,11 +5,17 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use function explode;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"login"}, message="Ce pseudo est déjà utilisé !")
+ * @UniqueEntity(fields={"email"}, message="Cet email est déjà utilisé !")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -20,26 +26,59 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 50,
+     *      minMessage = "Votre pseudo doit contenir au moins {{ limit }} caractères",
+     *      maxMessage = "Votre pseudo doit contenir au maximum {{ limit }} caractères",
+     * )
      */
     private $login;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  * @Assert\Length(
+     *      min = 8,
+     *      max = 50,
+     *      minMessage = "Votre mot de passe doit contenir au moins {{ limit }} caractères",
+     *      maxMessage = "Votre mot de passe doit contenir au maximum {{ limit }} caractères",
+     * )
      */
     private $password;
 
     /**
+     * @Assert\EqualTo(propertyPath="password", message="Les mots de passes ne correspondent pas !")
+     */
+
+    private $confirmPassword;
+
+    /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Votre prénom doit contenir au moins {{ limit }} caractères",
+     *      maxMessage = "Votre prénom doit contenir au maximum {{ limit }} caractères",
+     * )
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Votre nom doit contenir au moins {{ limit }} caractères",
+     *      maxMessage = "Votre nom doit contenir au maximum {{ limit }} caractères",
+     * )
      */
-    private $LastName;
+    private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=190, unique=true)
+     * @Assert\Email(
+     *     message = "L'email '{{ value }}' n'est pas valide"
+     * )
      */
     private $email;
 
@@ -97,6 +136,22 @@ class User
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getConfirmPassword()
+    {
+        return $this->confirmPassword;
+    }
+
+    /**
+     * @param mixed $confirmPassword
+     */
+    public function setConfirmPassword($confirmPassword): void
+    {
+        $this->confirmPassword = $confirmPassword;
+    }
+
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -111,12 +166,12 @@ class User
 
     public function getLastName(): ?string
     {
-        return $this->LastName;
+        return $this->lastName;
     }
 
-    public function setLastName(string $LastName): self
+    public function setLastName(string $lastName): self
     {
-        $this->LastName = $LastName;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -199,4 +254,30 @@ class User
 
         return $this;
     }
+
+
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+        return $this->login;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+        //return array('ROLE_USER');
+        $arrayConversionOfRole = explode(' ',$this->getRole());
+        return $arrayConversionOfRole;
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
 }

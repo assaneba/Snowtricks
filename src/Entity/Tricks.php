@@ -41,12 +41,7 @@ class Tricks
     private $lastModifyAt;
 
     /**
-     * @ORM\Column(type="string")
-     * * @Assert\File(
-     *     maxSize = "1024k",
-     *     mimeTypes = {"image/png", "image/jpg", "image/gif"},
-     *     mimeTypesMessage = "Vueillez uploader une image valide"
-     * )
+     * @ORM\Column(type="string", nullable=true)
      */
     private $defaultImage;
 

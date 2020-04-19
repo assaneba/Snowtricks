@@ -23,6 +23,23 @@ header.masthead {
     background-image: url(../uploads/images/home_img.jpg);
 }
 
+@media (max-width: 768px) {
+    header.masthead .edit-delete-btn {
+        position: absolute;
+        top: 70px;
+        right: 0px;
+    }
+}
+
+@media (min-width: 768px){
+    header.masthead .edit-delete-btn {
+        position: absolute;
+        top: 110px;
+        right: 0px;
+    }
+}
+
+
 /* For Carousel images and videos on Trick page*/
 
 /*

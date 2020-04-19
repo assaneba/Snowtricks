@@ -4,12 +4,12 @@
 
 {% block header %}
         <!-- Header -->
-        <header class="masthead" style="background-image: url({{ asset('uploads/images/') }} {{ trick.defaultImage }}) !important">
+        <header class="masthead" style="background-image: url({{ asset('uploads/images/') }}{{ trick.defaultImage }}) !important">
             <div class="container">
                 <div class="intro-text">
                     <div class="intro-lead-in">Snowtricks</div>
                     <div class="intro-heading text-uppercase">{{ trick.name }}</div>
-                    <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">En savoir plus</a>
+                    <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#gallerie">En savoir plus</a>
                 </div>
             </div>
         </header>
