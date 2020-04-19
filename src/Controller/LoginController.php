@@ -116,15 +116,6 @@ class LoginController extends AbstractController
 
             return $this->render('security/reset_password.html.twig', ['token' => $token]);
         }
-
-    }
-
-    /**
-     * @Route("/reset", name="reset_email")
-     */
-    public function resetEmail(){
-
-        return $this->render('security/email_reset_password.html.twig', ['url' => 12]);
     }
 
 }
