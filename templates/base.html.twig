@@ -63,6 +63,16 @@
                 </div>
             </div>
         </nav>
+         {% for label, messages in app.flashes(['warning', 'success', 'danger']) %}
+             {% for message in messages %}
+                <nav class="navbar navbar-expand-lg fixed-top mt-3">
+                    <div class="alert alert-{{ label }}" role="alert">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ message }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </nav>
+             {% endfor %}
+         {% endfor %}
+
 
         {% block header %} {% endblock %}
 

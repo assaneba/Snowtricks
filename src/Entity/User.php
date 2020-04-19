@@ -49,7 +49,6 @@ class User implements UserInterface
     /**
      * @Assert\EqualTo(propertyPath="password", message="Les mots de passes ne correspondent pas !")
      */
-
     private $confirmPassword;
 
     /**
@@ -101,6 +100,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $resetToken;
 
     public function __construct()
     {
@@ -278,6 +282,22 @@ class User implements UserInterface
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getResetToken(): string
+    {
+        return $this->resetToken;
+    }
+
+    /**
+     * @param string $resetToken
+     */
+    public function setResetToken(?string $resetToken): void
+    {
+        $this->resetToken = $resetToken;
     }
 
 }
