@@ -55,6 +55,7 @@ class LoginController extends AbstractController
 
             if ($user === null) {
                 $this->addFlash('danger', 'Email Inconnu');
+
                 return $this->redirectToRoute('home');
             }
             $token = $tokenGenerator->generateToken();
@@ -64,6 +65,7 @@ class LoginController extends AbstractController
                 $entityManager->flush();
             } catch (\Exception $e) {
                 $this->addFlash('warning', $e->getMessage());
+
                 return $this->redirectToRoute('home');
             }
 
@@ -73,12 +75,11 @@ class LoginController extends AbstractController
                 ->setFrom('test.dev.assanetb@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody(
-                    "Cliquez sur le lien pour modifer votre mot de passe : " . $url,
+                    $this->renderView('security/email_reset_password.html.twig', ['url' => $url]),
                     'text/html'
                 );
 
             $mailer->send($message);
-
             $this->addFlash('success', 'Mail envoyé');
 
             return $this->redirectToRoute('home');
@@ -100,6 +101,7 @@ class LoginController extends AbstractController
 
             if ($user === null) {
                 $this->addFlash('danger', 'Token Inconnu');
+
                 return $this->redirectToRoute('home');
             }
 
@@ -115,6 +117,14 @@ class LoginController extends AbstractController
             return $this->render('security/reset_password.html.twig', ['token' => $token]);
         }
 
+    }
+
+    /**
+     * @Route("/reset", name="reset_email")
+     */
+    public function resetEmail(){
+
+        return $this->render('security/email_reset_password.html.twig', ['url' => 12]);
     }
 
 }
