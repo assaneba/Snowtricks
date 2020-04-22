@@ -14,12 +14,6 @@ class GroupType extends AbstractType
     {
         $builder
             ->add('name');
-        /*
-            ->add('name', ChoiceType::class, [
-                'placeholder' => 'Choisir le/les groupe(s)',
-                'multiple'    => true,
-                'expanded'    => true,
-            ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver)
