@@ -86,9 +86,13 @@ class TrickController extends AbstractController
         $trick = new Tricks();
         $imagesCollect = new ArrayCollection();
         $videoCollect = new ArrayCollection();
+        $groupCollect = new ArrayCollection();
 
         foreach ($trick->getVideos() as $video) {
             $videoCollect->add($video);
+        }
+        foreach ($trick->getGroupOfTricks() as $group) {
+            $groupCollect->add($group);
         }
 
         $form = $this->createForm(TrickType::class, $trick);

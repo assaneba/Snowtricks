@@ -54,13 +54,14 @@
             <div class="mt-5">
                 <ul class="list-group list-group-horizontal-md">
                     <li class="list-group-item">Créé le {{ trick.createdAt | date("d/m/Y à H:m") }}</li>
-                    <li class="list-group-item">{{ trick.groupOfTricks.name }}</li>
+                    {% for aGroup in trick.groupOfTricks %}
+                        <li class="list-group-item">{{ aGroup.name }}</li>
+                    {% endfor %}
                     {% if trick.lastModifyAt %}
                         <li class="list-group-item">Dernière modification {{ trick.lastModifyAt | date("d/m/Y à H:m") }}</li>
                     {% endif %}
                 </ul>
             </div>
-
 
         </div>
 

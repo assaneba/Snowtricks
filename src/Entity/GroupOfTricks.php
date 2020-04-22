@@ -24,7 +24,7 @@ class GroupOfTricks
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Tricks", mappedBy="groupOfTricks")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tricks", mappedBy="groupOfTricks")
      */
     private $tricks;
 
