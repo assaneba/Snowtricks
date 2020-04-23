@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Tricks;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,10 +12,12 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index()
+    public function index(ObjectManager $manager)
     {
+        $tricks = $manager->getRepository(Tricks::class)->findAll();
+
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'annuaire Snowtricks',
+            'tricks' => $tricks,
         ]);
     }
 

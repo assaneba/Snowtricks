@@ -4,25 +4,60 @@
 
   {% block header %}
       <!-- Header -->
-      <header class="masthead">
-          <div class="container">
-              <div class="intro-text">
-                  <div class="intro-lead-in">Welcome To Our Studio!</div>
-                  <div class="intro-heading text-uppercase">It's Nice To Meet You</div>
-                  <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a>
+      <section class="page-section">
+          <header class="masthead">
+              <div class="container">
+                  <div class="intro-text">
+                      <div class="intro-lead-in">Welcome To Our Studio!</div>
+                      <div class="intro-heading text-uppercase">It's Nice To Meet You</div>
+                      <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a>
+                  </div>
               </div>
-          </div>
-      </header>
+          </header>
+      </section>
   {% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Bienvenue sur l' {{ controller_name }}! ✅</h1>
+    <section class="page-section">
+        <div class="container">
+            <h2 class="text-center mb-5">
+                Bienvenue sur l' annuaire Snowtricks !
+            </h2>
 
-</div>
+       {#     <div class="mt-5">
+                <ul class="list-group list-group-horizontal-md">
+                    <li class="list-group-item">Créé le {{ trick.createdAt | date("d/m/Y à H:m") }}</li>
+                    {% for aGroup in trick.groupOfTricks %}
+                        <li class="list-group-item">{{ aGroup.name }}</li>
+                    {% endfor %}
+                    {% if trick.lastModifyAt %}
+                        <li class="list-group-item">Dernière modification {{ trick.lastModifyAt | date("d/m/Y à H:m") }}</li>
+                    {% endif %}
+                </ul>
+            </div>#}
+            <div class="row row-cols-1 row-cols-md-2">
+                {% for trick in tricks %}
+                <div class="mb-4 col-md-4">
+                    <div class="card">
+                        <a href="{{ path('trick_show', {'slug': trick.slug }) }}">
+                            <img src="{{ asset('uploads/images/') }}{{ trick.defaultImage }}" class="card-img-top" alt="{{ trick.name }}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ path('trick_show', {'slug': trick.slug }) }}"> {{ trick.name }} </a></h5>
+                            <p class="card-text">Groupe(s) :
+                                {% for group in trick.groupOfTricks %}
+                                    {{ group.name~' - ' }}
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </section>
+
 {% endblock %}
