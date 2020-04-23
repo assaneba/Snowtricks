@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\GroupOfTricks;
 use App\Entity\Image;
 use App\Entity\Tricks;
+use App\Form\CommentType;
 use App\Form\GroupType;
 use App\Form\ImagesType;
 use App\Form\TrickEditType;
@@ -12,11 +14,7 @@ use App\Form\TrickType;
 use App\Service\UploadFile;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use function dump;
-use function explode;
 use phpDocumentor\Reflection\Types\Object_;
-use function str_replace;
-use function strtolower;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
@@ -25,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use function unlink;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class TrickController extends AbstractController
@@ -69,15 +66,31 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/{slug}/view", name="trick_show")
      */
-    public function showTrick($slug, ObjectManager $manager)
+    public function showTrick($slug, ObjectManager $manager, Request $request)
     {
         $trick = $manager->getRepository(Tricks::class)->findOneBySlug($slug);
+
         if (!$trick) {
             return $this->redirectToRoute('error_page');
         }
 
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setCreatedAt(new \DateTime());
+            $comment->setPublished(true);
+            $comment->setTrick($trick);
+            $comment->setUser($this->getUser());
+
+            $manager->persist($comment);
+            $manager->flush();
+        }
+
         return $this->render('trick/show.html.twig', [
-            'trick' => $trick
+            'trick' => $trick,
+            'commentForm' => $commentForm->createView(),
         ]);
     }
 

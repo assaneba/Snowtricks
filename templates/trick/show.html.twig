@@ -62,10 +62,24 @@
                     {% endif %}
                 </ul>
             </div>
-
         </div>
 
     </section>
+
+    <div class="container carousel slide">
+        {{ form_start(commentForm) }}
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_row(commentForm.content, {'label': 'Commentaire', 'attr': { 'class': 'form-control', 'placeholder': 'Votre commentaire ...', 'required': 'required' }}) }}
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-3">
+                <div id="success"></div>
+                <button class="btn btn-primary btn-xl text-uppercase" type="submit">Laisser un commentaire !</button>
+            </div>
+        {{ form_end(commentForm) }}
+    </div>
 
 {% endblock %}
 
