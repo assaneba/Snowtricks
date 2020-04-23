@@ -25,17 +25,6 @@
                 Bienvenue sur l' annuaire Snowtricks !
             </h2>
 
-       {#     <div class="mt-5">
-                <ul class="list-group list-group-horizontal-md">
-                    <li class="list-group-item">Créé le {{ trick.createdAt | date("d/m/Y à H:m") }}</li>
-                    {% for aGroup in trick.groupOfTricks %}
-                        <li class="list-group-item">{{ aGroup.name }}</li>
-                    {% endfor %}
-                    {% if trick.lastModifyAt %}
-                        <li class="list-group-item">Dernière modification {{ trick.lastModifyAt | date("d/m/Y à H:m") }}</li>
-                    {% endif %}
-                </ul>
-            </div>#}
             <div class="row row-cols-1 row-cols-md-2">
                 {% for trick in tricks %}
                 <div class="mb-4 col-md-4">
@@ -55,6 +44,7 @@
                 </div>
                 {% endfor %}
             </div>
+            {% include 'pagination/pagination.html.twig' %}
 
         </div>
 
