@@ -13,7 +13,10 @@ use App\Service\UploadFile;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use function dump;
+use function explode;
 use phpDocumentor\Reflection\Types\Object_;
+use function str_replace;
+use function strtolower;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
@@ -64,16 +67,17 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/trick/{name}/view", name="trick_show")
+     * @Route("/trick/{slug}/view", name="trick_show")
      */
-    public function showTrick(Tricks $tricks = null)
+    public function showTrick($slug, ObjectManager $manager)
     {
-        if (!$tricks) {
+        $trick = $manager->getRepository(Tricks::class)->findOneBySlug($slug);
+        if (!$trick) {
             return $this->redirectToRoute('error_page');
         }
 
         return $this->render('trick/show.html.twig', [
-            'trick' => $tricks
+            'trick' => $trick
         ]);
     }
 
@@ -86,9 +90,13 @@ class TrickController extends AbstractController
         $trick = new Tricks();
         $imagesCollect = new ArrayCollection();
         $videoCollect = new ArrayCollection();
+        $groupCollect = new ArrayCollection();
 
         foreach ($trick->getVideos() as $video) {
             $videoCollect->add($video);
+        }
+        foreach ($trick->getGroupOfTricks() as $group) {
+            $groupCollect->add($group);
         }
 
         $form = $this->createForm(TrickType::class, $trick);
@@ -98,6 +106,9 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() AND $form->isValid()) {
             $defaultImage = $uploadFile->upload($form['defaultImage']->getData());
             $trick->setDefaultImage($defaultImage);
+            // Create the slug
+            $slug = str_replace(' ', '-', strtolower($trick->getName()));
+            $trick->setSlug($slug);
 
             foreach ($trick->getImages() as $index => $illustration) {
                 $index = $index + 1;
@@ -113,7 +124,7 @@ class TrickController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
-            return $this->redirectToRoute('trick_show', ['name' => $trick->getName()]);
+            return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
         }
 
         return $this->render('trick/add.html.twig', [

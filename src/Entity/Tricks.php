@@ -46,8 +46,9 @@ class Tricks
     private $defaultImage;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\GroupOfTricks", inversedBy="tricks", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\GroupOfTricks", inversedBy="tricks", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinTable(name="trick_has_groups")
      */
     private $groupOfTricks;
 
@@ -66,11 +67,17 @@ class Tricks
      */
     private $videos;
 
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->groupOfTricks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,14 +145,17 @@ class Tricks
         return $this;
     }
 
-    public function getGroupOfTricks(): ?GroupOfTricks
+    /**
+     * @return Collection|GroupOfTricks[]
+     */
+    public function getGroupOfTricks(): Collection
     {
         return $this->groupOfTricks;
     }
 
     public function setGroupOfTricks(?GroupOfTricks $groupOfTricks): self
     {
-        $this->groupOfTricks = $groupOfTricks;
+        $this->groupOfTricks[] = $groupOfTricks;
 
         return $this;
     }
@@ -241,5 +251,21 @@ class Tricks
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug): void
+    {
+        $this->slug = $slug;
     }
 }
