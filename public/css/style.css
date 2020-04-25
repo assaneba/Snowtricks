@@ -6,6 +6,16 @@
     background-color: #495057;
 }
 
+/* Remove button Suivant and Précédent on Pagination  */
+.remove-btn {
+    display: none !important;
+}
+
+/* Resolve empty space after nav bar (on trick show)  */
+.empty-top {
+    margin-top: -20px;
+}
+
 section {
     margin-top: 0px;
 }
