@@ -35,10 +35,21 @@ class TricksRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder('t')
-            ->getQuery()
-            ->setFirstResult(($page - 1) * $limit)
-            ->setMaxResults($limit);
+                      ->getQuery()
+                      ->setFirstResult(($page - 1) * $limit)
+                      ->setMaxResults($limit);
 
         return new Paginator($query);
     }
+
+    public function totalTricks() {
+        //  Query how many rows are there in the Trick table
+        $query = $this->createQueryBuilder('t')
+                      ->select('count(t.id)')
+                      ->getQuery()
+                      ->getSingleScalarResult();
+
+        return $query;
+    }
+
 }

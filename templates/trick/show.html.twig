@@ -84,7 +84,7 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="comments-logout">
-                        {% for comment in trick.comments %}
+                        {% for comment in comments %}
                         <ul class="media-list">
                             <li class="media">
                                 <a class="pull-left" href="#">
@@ -106,6 +106,9 @@
                             </li>
                         </ul>
                         {% endfor %}
+
+                        {% include 'pagination/pagination.html.twig' %}
+
                     </div>
                     <div class="tab-pane" id="add-comment">
                         {{ form_start(commentForm, { 'attr': { 'class': 'form-horizontal', 'id': 'commentForm', 'role': 'form' }}) }}

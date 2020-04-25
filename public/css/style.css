@@ -6,6 +6,11 @@
     background-color: #495057;
 }
 
+/* Remove button Suivant and Précédent on Pagination  */
+.remove-btn {
+    display: none !important;
+}
+
 section {
     margin-top: 0px;
 }
