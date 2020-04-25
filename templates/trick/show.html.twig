@@ -79,8 +79,8 @@
             </div>
             <div class="comment-tabs">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Les commentaires</h4></a></li>
-                    <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Commenter</h4></a></li>
+                    <li class="btn btn-warning"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Les commentaires</h4></a></li>
+                    <li class="ml-3 btn btn-warning"><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Commenter</h4></a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="comments-logout">
@@ -118,7 +118,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span>Laisser un commentaire !</button>
+                                    <button class="btn btn-primary btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span>Laisser un commentaire !</button>
                                 </div>
                             </div>
                         {{ form_end(commentForm) }}
@@ -133,7 +133,8 @@
 {% endblock %}
 
 {% block javascprits %}
+
+    <!-- For trick caroussel -->
     <script src="{{ asset('js/carousel-trick.js') }}"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 {% endblock %}
