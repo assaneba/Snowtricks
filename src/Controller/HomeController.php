@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Tricks;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use function dump;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,28 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/{page<\d+>?1}", name="home")
+     * @Route("/", name="home")
      */
-    public function index(TricksRepository $tricksRepository, $page, ObjectManager $manager)
+    public function index(TricksRepository $tricksRepository, Request $request)
     {
-        $tricks = $manager->getRepository(Tricks::class);
-        //  Query how many rows are there in the Trick table
-        $totalTricks = $tricks->createQueryBuilder('t')
-            ->select('count(t.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $totalTricks = $tricksRepository->totalTricks();
+        $page = $request->query->get('page');
 
         if ($page < 1 || $page > $totalTricks) {
             $page = 1;
         }
-        $limit = 3;
-        $paginatedTricks = $tricksRepository->paginate($page, $limit);
 
+        $paginatedTricks = $tricksRepository->paginate($page, $limit = 3);
         $pagination = array(
             'page' => $page,
             'nbPages' => ceil(count($paginatedTricks) / $limit),
             'routeName' => 'home',
-            'paramsRoute' => array()
+            'slug' => null,
         );
 
         return $this->render('home/index.html.twig', [
