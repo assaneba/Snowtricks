@@ -21,6 +21,11 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
+    /**
+     * @param $page
+     * @param $limit
+     * @return Paginator
+     */
     public function paginate($page, $limit){
         if (!is_numeric($page)) {
             throw new \InvalidArgumentException(
@@ -35,6 +40,7 @@ class TricksRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder('t')
+                      ->addOrderBy('t.createdAt', 'DESC')
                       ->getQuery()
                       ->setFirstResult(($page - 1) * $limit)
                       ->setMaxResults($limit);
@@ -42,6 +48,10 @@ class TricksRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
+    /**
+     * @return integer - Number of tricks
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function totalTricks() {
         //  Query how many rows are there in the Trick table
         $query = $this->createQueryBuilder('t')

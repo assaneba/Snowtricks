@@ -21,6 +21,10 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    /**
+     * @return integer - number of comments for a Trick
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function totalComments() {
         //  Query how many rows are there in the Comment table
         $query = $this->createQueryBuilder('c')
@@ -31,14 +35,11 @@ class CommentRepository extends ServiceEntityRepository
         return $query;
     }
 
-    public function commentsByDate() {
-        $query = $this->createQueryBuilder('c')
-                      ->addOrderBy('c.created_at', 'DESC')
-                      ->getQuery()
-                      ->execute();
-
-    }
-
+    /**
+     * @param $page
+     * @param $limit
+     * @return Paginator
+     */
     public function paginate($page, $limit) {
         if (!is_numeric($page)) {
             throw new \InvalidArgumentException(
@@ -53,9 +54,10 @@ class CommentRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder('c')
-            ->getQuery()
-            ->setFirstResult(($page - 1) * $limit)
-            ->setMaxResults($limit);
+                      ->addOrderBy('c.createdAt', 'DESC')
+                      ->getQuery()
+                      ->setFirstResult(($page - 1) * $limit)
+                      ->setMaxResults($limit);
 
         return new Paginator($query);
     }

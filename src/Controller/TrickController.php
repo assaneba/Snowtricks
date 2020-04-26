@@ -81,12 +81,15 @@ class TrickController extends AbstractController
 
         //Pagination of comments
         $totalComments = $commentRepository->totalComments();
+
         $page = $request->query->get('page');
 
         if ($page < 1 || $page > $totalComments) {
             $page = 1;
         }
+
         $paginatedComments = $commentRepository->paginate($page, $limit = 2);
+
         $pagination = array(
             'page' => $page,
             'nbPages' => ceil(count($paginatedComments) / $limit),
