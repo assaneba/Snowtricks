@@ -55,10 +55,26 @@ class CommentRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('c')
                       ->addOrderBy('c.createdAt', 'DESC')
+                      ->where('c.published = true')
                       ->getQuery()
                       ->setFirstResult(($page - 1) * $limit)
                       ->setMaxResults($limit);
 
         return new Paginator($query);
     }
+
+
+    /**
+     * @return array
+     */
+    public function unpublished() {
+        $query = $this->createQueryBuilder('c')
+            ->addOrderBy('c.createdAt', 'DESC')
+            ->where('c.published = false')
+            ->getQuery()
+            ->execute();
+
+        return $query;
+    }
+
 }
