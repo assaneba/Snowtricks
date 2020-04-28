@@ -7,7 +7,7 @@
     <link href="{{ asset('css/comments.css') }}" rel="stylesheet">
 
         <!-- Header -->
-        <header class="masthead" style="background-image: url({{ asset('uploads/images/') }}{{ trick.defaultImage }}) !important">
+        <header class="masthead empty-top" style="background-image: url({{ asset('uploads/images/') }}{{ trick.defaultImage }}) !important">
             <div class="container">
                 <div class="intro-text">
                     <div class="intro-lead-in">Snowtricks</div>
@@ -84,7 +84,7 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="comments-logout">
-                        {% for comment in trick.comments %}
+                        {% for comment in comments %}
                         <ul class="media-list">
                             <li class="media">
                                 <a class="pull-left" href="#">
@@ -106,8 +106,12 @@
                             </li>
                         </ul>
                         {% endfor %}
+
+                        {% include 'pagination/pagination.html.twig' %}
+
                     </div>
                     <div class="tab-pane" id="add-comment">
+                        {% if app.user %}
                         {{ form_start(commentForm, { 'attr': { 'class': 'form-horizontal', 'id': 'commentForm', 'role': 'form' }}) }}
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Commentaire :</label>
@@ -122,6 +126,13 @@
                                 </div>
                             </div>
                         {{ form_end(commentForm) }}
+
+                        {% else %}
+                            <h4 class="reviews text-danger text-center">Vous devez être connecté pour commenter !</h4>
+                                <div class="text-center">
+                                    <a href="{{ path('app_login') }}" class="btn btn-primary text-uppercase" type="button">Se connecter</a>
+                                </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

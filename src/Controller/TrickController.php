@@ -11,6 +11,7 @@ use App\Form\GroupType;
 use App\Form\ImagesType;
 use App\Form\TrickEditType;
 use App\Form\TrickType;
+use App\Repository\CommentRepository;
 use App\Service\UploadFile;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -66,7 +67,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/{slug}/view", name="trick_show")
      */
-    public function showTrick($slug, ObjectManager $manager, Request $request)
+    public function showTrick($slug, ObjectManager $manager, Request $request, CommentRepository $commentRepository)
     {
         $trick = $manager->getRepository(Tricks::class)->findOneBySlug($slug);
 
@@ -77,6 +78,24 @@ class TrickController extends AbstractController
         $comment = new Comment();
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($request);
+
+        //Pagination of comments
+        $totalComments = $commentRepository->totalComments();
+
+        $page = $request->query->get('page');
+
+        if ($page < 1 || $page > $totalComments) {
+            $page = 1;
+        }
+
+        $paginatedComments = $commentRepository->paginate($page, $limit = 2);
+
+        $pagination = array(
+            'page' => $page,
+            'nbPages' => ceil(count($paginatedComments) / $limit),
+            'routeName' => 'trick_show',
+            'slug' => $slug
+        );
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setCreatedAt(new \DateTime());
@@ -93,6 +112,8 @@ class TrickController extends AbstractController
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
             'commentForm' => $commentForm->createView(),
+            'comments'  => $paginatedComments,
+            'pagination' => $pagination,
         ]);
     }
 

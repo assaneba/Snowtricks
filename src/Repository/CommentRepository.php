@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use function is_numeric;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +21,44 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    /**
+     * @return integer - number of comments for a Trick
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function totalComments() {
+        //  Query how many rows are there in the Comment table
+        $query = $this->createQueryBuilder('c')
+                      ->select('count(c.id)')
+                      ->getQuery()
+                      ->getSingleScalarResult();
 
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query;
     }
-    */
+
+    /**
+     * @param $page
+     * @param $limit
+     * @return Paginator
+     */
+    public function paginate($page, $limit) {
+        if (!is_numeric($page)) {
+            throw new \InvalidArgumentException(
+                'La valeur de l\'argument $page est incorrecte (valeur : ' . $page . ').'
+            );
+        }
+
+        if (!is_numeric($limit)) {
+            throw new \InvalidArgumentException(
+                'La valeur de l\'argument $limit est incorrecte (valeur : ' . $limit . ').'
+            );
+        }
+
+        $query = $this->createQueryBuilder('c')
+                      ->addOrderBy('c.createdAt', 'DESC')
+                      ->getQuery()
+                      ->setFirstResult(($page - 1) * $limit)
+                      ->setMaxResults($limit);
+
+        return new Paginator($query);
+    }
 }
