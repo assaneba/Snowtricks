@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\GroupOfTricks;
 use App\Entity\Image;
 use App\Entity\Tricks;
+use App\Entity\User;
 use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\GroupType;
@@ -26,6 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class TrickController extends AbstractController
 {
@@ -172,6 +174,7 @@ class TrickController extends AbstractController
 
             $trick->setCreatedAt(new \DateTime());
             $trick->setLastModifyAt(new \DateTime());
+            $trick->setUser($this->getUser());
 
             $manager->persist($trick);
             $manager->flush();
@@ -191,9 +194,9 @@ class TrickController extends AbstractController
      * @param UploadFile $uploadFile
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/trick/{id}/edit", name="trick_edit")
-     * @isGranted("ROLE_USER", message="Vous devez être connecté pour modifier cette section ! ")
+     * @Security("is_granted('ROLE_USER') and tricks.getUser() == user")
      */
-    public function editTrick(Tricks $tricks = null, Request $request, ObjectManager $manager, UploadFile $uploadFile)
+    public function editTrick(Tricks $tricks = null, Request $request, ObjectManager $manager, UploadFile $uploadFile, User $user)
     {
         if(!$tricks) {
             return $this->redirectToRoute('error_page');

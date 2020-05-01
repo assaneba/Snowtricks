@@ -29,7 +29,7 @@ class HomeController extends AbstractController
             $page = 1;
         }
 
-        $paginatedTricks = $tricksRepository->paginate($page, $limit = 3);
+        $paginatedTricks = $tricksRepository->paginate($page, $limit = 6);
         $pagination = array(
             'page' => $page,
             'nbPages' => ceil(count($paginatedTricks) / $limit),
