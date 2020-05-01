@@ -12,11 +12,7 @@
 
     <section>
         <h1 class="text-center text-white">
-            {% if app.user %}
-                Modifier le profil
-            {% else %}
                 Page d'incription
-            {%endif  %}
         </h1>
 
         <div class="container">
@@ -31,11 +27,7 @@
 
                         <div class="card-body">
                             <h5 class="card-title text-center">
-                                {% if app.user %}
-                                    Mettre à jour les infos
-                                {% else %}
-                                    Veuillez renseigner vos infos
-                                {%endif  %}
+                                Veuillez renseigner vos infos
                             </h5>
 
                             {{ form_start(form) }}
@@ -57,7 +49,6 @@
                                 </div>
 
                                 <hr>
-
                                 <div class="form-label-group">
                                     {{ form_row(form.password, {'label': 'Mot de passe', 'attr': { 'class': 'form-control', 'placeholder': 'Votre mot de passe ...', 'required': 'required' }}) }}
                                 </div>
@@ -65,13 +56,11 @@
                                 <div class="form-label-group">
                                     {{ form_row(form.confirmPassword, {'label': 'Confirmer le mot de passe', 'attr': { 'class': 'form-control', 'placeholder': 'Confirmer votre mot de passe ...', 'required': 'required' }}) }}
                                 </div>
-                            {% if not  app.user %}
+
                                 <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">S'inscrire</button>
                                 <a class="d-block text-center mt-2 small" href="{{ path('app_login') }}">Sign In</a>
                                 <hr class="my-4">
-                            {% else %}
-                                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Modifier le profil</button>
-                            {% endif %}
+
 
                             {{ form_end(form) }}
 

@@ -39,7 +39,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      *  * @Assert\Length(
      *      min = 8,
-     *      max = 50,
+     *      max = 255,
      *      minMessage = "Votre mot de passe doit contenir au moins {{ limit }} caractères",
      *      maxMessage = "Votre mot de passe doit contenir au maximum {{ limit }} caractères",
      * )
@@ -55,7 +55,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(
      *      min = 2,
-     *      max = 50,
+     *      max = 255,
      *      minMessage = "Votre prénom doit contenir au moins {{ limit }} caractères",
      *      maxMessage = "Votre prénom doit contenir au maximum {{ limit }} caractères",
      * )

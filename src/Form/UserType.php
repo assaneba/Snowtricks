@@ -37,8 +37,6 @@ class UserType extends AbstractType
                     ])
                 ]
             ])
-            //->add('role')
-            //->add('createdAt')
         ;
     }
 

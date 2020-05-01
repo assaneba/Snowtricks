@@ -58,12 +58,12 @@ class Tricks
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", cascade={"persist"}, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, mappedBy="trick")
      */
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="trick", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="trick", cascade={"persist", "remove"})
      */
     private $videos;
 
@@ -202,7 +202,7 @@ class Tricks
     public function addImage(Image $image): self
     {
         if (!$this->images->contains($image)) {
-            $this->images[] = $image;
+            $this->images->add($image);
             $image->setTrick($this);
         }
 
@@ -214,10 +214,17 @@ class Tricks
         if ($this->images->contains($image)) {
             $this->images->removeElement($image);
             // set the owning side to null (unless already changed)
-            if ($image->getTrick() === $this) {
-                $image->setTrick(null);
-            }
         }
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $images
+     */
+    public function setImages($images): Tricks
+    {
+        $this->images = $images;
 
         return $this;
     }

@@ -32,9 +32,9 @@ class Comment
     private $lastModifiedAt;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $published;
+    private $published = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tricks", inversedBy="comments")

@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer le profil{% endblock %}
+
+{% block stylesheets %}
+
+    <link href="{{ asset('node_modules/security-css/register.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+{% block body %}
+
+    <section>
+        <h1 class="text-center text-white">Modifier le profil</h1>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-xl-9 mx-auto">
+                    <div class="card card-signin flex-row my-5">
+                        <div class="card-img-left d-none d-md-flex">
+                            <!-- Background image for card set in CSS! -->
+                        </div>
+
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Mettre à jour les infos</h5>
+
+                            {{ form_start(form) }}
+
+                            <div class="form-label-group">
+                                {{ form_row(form.login, { 'label': 'Login', 'attr' : { 'class' : 'form-control', 'placeholder' : 'Votre pseudo...', 'required' : 'required' }}) }}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form_row(form.firstName, {'label': 'Prénom', 'attr': { 'class': 'form-control', 'placeholder': 'Votre prénom ...', 'required': 'required' }}) }}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form_row(form.lastName, {'label': 'Nom', 'attr': { 'class': 'form-control', 'placeholder': 'Votre nom de famille ...', 'required': 'required' }}) }}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form_row(form.email, {'label': 'Email', 'attr': { 'class': 'form-control', 'placeholder': 'Votre email ...', 'required': 'required' }}) }}
+                            </div>
+                            <div class="form-label-group">
+                                {{ form_row(form.profileImage, {'label': 'Image de profil', 'attr': { 'class': 'form-control' }}) }}
+                            </div>
+
+                            <hr>
+
+                                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Modifier le profil</button>
+
+                            {{ form_end(form) }}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+{% endblock %}

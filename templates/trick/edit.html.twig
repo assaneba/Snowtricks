@@ -6,7 +6,7 @@
 
     {{ form_start(form) }}
     <!-- Header -->
-    <header class="masthead" style="background-image: url({{ asset('uploads/images/')}}{{ trick.defaultImage }})">
+    <header class="masthead" style="background-image: url({{ asset('uploads/images/' ~ trick.defaultImage) }})">
         <div class="container">
             <div class="intro-text">
                 <div class="edit-delete-btn">
@@ -18,7 +18,6 @@
                     <!-- Button trigger delete Default image -->
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDefaultImage">
                         <i class="fas fa-trash"></i>
-                        {#                    <a href="{{ trick.defaultImage }}" class="btn btn-info" role="button"></a>#}
                     </button>
                 </div>
                 <div class="intro-lead-in">Snowtricks</div>
@@ -37,55 +36,61 @@
             <div id="carousel-example" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner row w-100 mx-auto" role="listbox">
                     {% for image in trick.images %}
-                        <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3 {% if loop.first %}active{% endif %}">
+                        <div class="carousel-item1 col-12 col-sm-6 col-md-4 col-lg-3 {% if loop.first %}active{% endif %}">
                             <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/') }}{{ image.url }}">
                             <div class="edit-delete-btn float-right">
 
                                 <!-- Button trigger modify an image -->
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modifyAnImage">
+                                <button type="button" class="btn btn-info" id="{{ image.id }}" data-toggle="modal" data-target="#modifyAnImage" data-action="modify-image">
                                     <i class="fas fa-pen-square"></i>
-{#                                    <a href="{{ path('modify-an-image', {'idTrick' : trick.id, 'idImage' : image.id}) }}" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>#}
                                 </button>
 
                                 <!-- Button trigger delete an image -->
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAnImage">
+                                <button type="button" class="btn btn-danger" id="{{ image.id }}" data-toggle="modal" data-target="#deleteAnImage" data-action="delete-image">
                                     <i class="fas fa-trash"></i>
-{#                                    <a href="{{ path('delete-an-image', {'id' : image.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>#}
                                 </button>
+
                             </div>
                         </div>
-                    {% endfor %}
-                    {% for video in trick.videos %}
-                        <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3">
-                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.embed }}" allowfullscreen></iframe>
-                            <div class="edit-delete-btn float-right">
 
+                    {% endfor %}
+
+                    {% for video in trick.videos %}
+                        <div class="carousel-item2 col-12 col-sm-6 col-md-4 col-lg-3">
+                            <iframe class="embed-responsive-item mr-3" src="https://www.youtube.com/embed/{{ video.embed }}" allowfullscreen></iframe>
+                            <div class="edit-delete-btn float-right">
                                 <!-- Button trigger modify a video -->
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modifyAVideo">
+                                <button type="button" class="btn btn-info" id="{{ video.id }}" data-toggle="modal"
+                                        data-target="#modifyAVideo" data-action="modify-video" data-embed="{{ video.embed }}">
                                     <i class="fas fa-pen-square"></i>
-{#                                    <a href="#" class="btn btn-info" role="button"><i class="fas fa-pen-square"></i></a>#}
                                 </button>
 
                                 <!-- Button trigger delete a video -->
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAVideo">
+                                <button type="button" class="btn btn-danger" id="{{ video.id }}" data-toggle="modal" data-target="#deleteAVideo" data-action="delete-video">
                                     <i class="fas fa-trash"></i>
-{#                                    <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>#}
                                 </button>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-                <a class="carousel-control-prev" href="#carousel-example" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carousel-example" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
             </div>
         </div>
     </section>
+
+    <div class="container row">
+        <div class="col-md-6 mt-4 images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+            <label>D'autres images du trick :</label>
+            <div class="form-group image-input">
+                <p class="help-block text-danger"></p>
+            </div>
+        </div>
+        <div class="col-md-6 mt-4 videos" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
+            <label>Vidéos du trick :</label>
+            <div class="form-group video-input">
+                <p class="help-block text-danger"></p>
+            </div>
+        </div>
+    </div>
 
     <section class="page-section">
         <div class="container">
@@ -101,7 +106,7 @@
         </div>
         <div class="float-right mr-5">
             <button type="submit" class="btn btn-success">Enregistrer</button>
-            <a href="#" role="button" class="btn btn-danger">Supprimer cette figure</a>
+            <button type="button" class="btn btn-danger" id="{{ trick.id }}" data-toggle="modal" data-target="#deleteATrick" data-action="delete-trick">Supprimer cette figure</button>
         </div>
     </section>
 
@@ -121,11 +126,12 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                     <button type="submit" class="btn btn-primary">Confirmer</button>
-{#                    <a href="{{ path('edit-default-image')}}" type="button" class="btn btn-primary">Confirmer</a>#}
                 </div>
             </div>
         </div>
     </div>
+
+    {{ form_end(form) }}
 
     <!-- Modal Delete Default image -->
     <div class="modal fade" id="deleteDefaultImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -158,13 +164,15 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                {{ form_start(formImage) }}
                 <div class="modal-body">
-{#                    {{ form_row(formImage) }}#}
+                    {{ form_row(formImage, {'label': 'Nouvelle image' }) }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Confirmer</button>
+                    <button type="submit" id="upload-image" class="btn btn-primary">Confirmer</button>
                 </div>
+                {{ form_end(formImage) }}
             </div>
         </div>
     </div>
@@ -184,7 +192,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-danger">Confirmer la suppression</button>
+                    <a type="button" class="btn btn-danger" href="#">Confirmer la suppression</a>
                 </div>
             </div>
         </div>
@@ -200,13 +208,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    {#                    {{ form_row(formImage) }}#}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Confirmer</button>
-                </div>
+                <form method="post" action="">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" id="newVideo" name="newVideo" value="" class="form-control form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Confirmer</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -226,20 +238,104 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-danger">Confirmer la suppression</button>
+                    <a type="button" class="btn btn-danger" href="#">Confirmer la suppression</a>
                 </div>
             </div>
         </div>
     </div>
 
-    {{ form_end(form) }}
-
-    {#
-        {{ form_end(form, {'render_rest': false}) }}
-    #}
+    <!-- Modal Delete a Trick -->
+    <div class="modal fade" id="deleteATrick" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Supprimer la Figure</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Etes-vous sûr de vouloir supprimer la Figure ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <a type="button" class="btn btn-danger" href="#">Confirmer la suppression</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
-{% block javascprits %}
+{% block javascripts %}
     <script src="{{ asset('js/carousel-trick.js')}}"></script>
+    <script src="{{ asset('js/add-del-img-in-edit.js') }}"></script>
+    <script src="{{ asset('js/add-del-video-in-edit.js') }}"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('button[data-action="delete-image"]').click(function () {
+
+                let id = $(this).attr('id');
+                let path = "/image/"+ id +"/delete";
+
+                $('#deleteAnImage .modal-footer a').attr("href", path);
+            });
+
+            $('button[data-action="delete-video"]').click(function () {
+                let id = $(this).attr('id');
+                let path = "/video/"+ id +"/delete";
+
+                $('#deleteAVideo .modal-footer a').attr("href", path);
+            });
+
+            $('button[data-action="modify-video"]').click(function () {
+                let id = $(this).attr('id');
+                let path = "/video/"+ id +"/modify";
+                let embed = $(this).attr('data-embed');
+
+                $('#modifyAVideo .modal-body div input').attr('value', embed);
+                $('#modifyAVideo form').attr("action", path);
+            });
+
+            $('button[data-action="delete-trick"]').click(function () {
+                let id = $(this).attr('id');
+                let path = "/trick/"+ id +"/delete";
+
+                $('#deleteATrick .modal-footer a').attr("href", path);
+            });
+
+            $('button[data-action="modify-image"]').click(function () {
+                var idImage = $(this).attr('id');
+                var pathImage = "/image/"+ idImage +"/modify";
+
+                $('form[name="images"]').submit(function(e) {
+                    e.preventDefault();
+                    var fd = new FormData();
+                    var files = $('#images_url')[0].files[0];
+
+                    fd.append('file',files);
+
+                    $.ajax({
+                        url: pathImage,
+                        type: 'post',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        success: function(response){
+                            if(response !== 0){
+                                // Image modify success
+                                location.reload(true);
+                            }else{
+                                alert('file non uploadé');
+                            }
+                        },
+                    });
+
+                });
+            });
+        });
+    </script>
+
 {% endblock %}
