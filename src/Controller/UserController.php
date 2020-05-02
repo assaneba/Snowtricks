@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Service\UploadFile;
 use Doctrine\Common\Persistence\ObjectManager;
-use function dump;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
