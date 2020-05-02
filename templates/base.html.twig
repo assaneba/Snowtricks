@@ -51,11 +51,16 @@
                             <a class="nav-link js-scroll-trigger" href="{{ path('register') }}">S'inscrire</a>
                         </li>
                         {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger text-success" href="{{ path('app_logout') }}">Hello {{ app.user.username }} !</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="{{ path('app_logout') }}">Déconnexion</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle js-scroll-trigger" href="#"
+                               id="navbarDropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
+                                Hello {{ app.user.username }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('edit-profile') }}">Modifier le profil</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+                            </div>
                         </li>
                         {% endif %}
 

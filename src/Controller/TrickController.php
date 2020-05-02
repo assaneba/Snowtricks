@@ -99,7 +99,7 @@ class TrickController extends AbstractController
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setCreatedAt(new \DateTime());
-            $comment->setPublished(true);
+            $comment->setPublished(false);
             $comment->setTrick($trick);
             $comment->setUser($this->getUser());
 
