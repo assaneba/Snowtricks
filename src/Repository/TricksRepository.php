@@ -40,7 +40,7 @@ class TricksRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder('t')
-                      ->addOrderBy('t.createdAt', 'DESC')
+                      ->addOrderBy('t.createdAt', 'ASC')
                       ->getQuery()
                       ->setFirstResult(($page - 1) * $limit)
                       ->setMaxResults($limit);

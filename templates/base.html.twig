@@ -38,10 +38,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Tricks</a>
+                            <a class="nav-link js-scroll-trigger" href="{{ path('home') }}">Accueil</a>
                         </li>
                         {% if not app.user %}
                         <li class="nav-item">
@@ -51,6 +48,12 @@
                             <a class="nav-link js-scroll-trigger" href="{{ path('register') }}">S'inscrire</a>
                         </li>
                         {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{{ path('trick_add') }}">Créer un trick</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{{ path('group_add') }}">Créer un groupe</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle js-scroll-trigger" href="#"
                                id="navbarDropdown" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
@@ -88,7 +91,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-4">
-                        <span class="copyright"> &copy; Snowtricks 2019</span>
+                        <span class="copyright"> &copy; Snowtricks 2020</span>
                     </div>
                     <div class="col-md-4">
                         <ul class="list-inline social-buttons">
@@ -112,7 +115,7 @@
                     <div class="col-md-4">
                         <ul class="list-inline quicklinks">
                             <li class="list-inline-item">
-                                <a href="#">Privacy Policy</a>
+                                <a href="#">Politique de confidentialité</a>
                             </li>
                         </ul>
                     </div>

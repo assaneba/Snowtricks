@@ -7,7 +7,7 @@
     <link href="{{ asset('css/comments.css') }}" rel="stylesheet">
 
         <!-- Header -->
-        <header class="masthead empty-top" style="background-image: url({{ asset('uploads/images/') }}{{ trick.defaultImage }}) !important">
+        <header class="masthead empty-top image-box" style="background-image: url({{ asset('uploads/images/') }}{{ trick.defaultImage }}) !important">
             <div class="container">
                 <div class="intro-text">
                     <div class="intro-lead-in">Snowtricks</div>
@@ -23,7 +23,7 @@
     <!-- Images and videos section -->
     <section class="page-section" id="gallerie">
             <div class="container-fluid">
-                <div id="carousel-example" class="carousel slide" data-ride="carousel">
+                <div id="carousel-example" class="carousel slide" data-ride="false" data-interval="false">
                     <div class="carousel-inner row w-100 mx-auto" role="listbox">
                         {% for image in trick.images %}
                         <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3 {% if loop.first %}active{% endif %}">
@@ -141,11 +141,11 @@
 
 </div>
 
+    <script src="{{ asset('js/carousel-trick.js') }}"></script>
 {% endblock %}
 
 {% block javascprits %}
 
     <!-- For trick caroussel -->
-    <script src="{{ asset('js/carousel-trick.js') }}"></script>
 
 {% endblock %}

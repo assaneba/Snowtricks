@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Annuaire Snowtricks!{% endblock %}
 
   {% block header %}
       <!-- Header -->
       <section class="page-section">
-          <header class="masthead">
+          <header class="masthead image-box" style="--image-url('../public/uploads/images/home_img.jpg')">
               <div class="container">
                   <div class="intro-text">
-                      <div class="intro-lead-in">Welcome To Our Studio!</div>
-                      <div class="intro-heading text-uppercase">It's Nice To Meet You</div>
-                      <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a>
+                      <div class="intro-lead-in">Bienvenue sur l'annuaire !</div>
+                      <div class="intro-heading text-uppercase">Snowtricks</div>
+                      <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#tricks">Voir plus</a>
                   </div>
               </div>
           </header>
@@ -19,10 +19,10 @@
 
 {% block body %}
 
-    <section class="page-section">
+    <section class="page-section empty-top2">
         <div class="container">
-            <h2 class="text-center mb-5">
-                Bienvenue sur l' annuaire Snowtricks !
+            <h2 class="text-center mb-5" id="tricks">
+                Liste des Figures :
             </h2>
 
             <div class="row row-cols-1 row-cols-md-2">
