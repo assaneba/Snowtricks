@@ -196,7 +196,7 @@ class TrickController extends AbstractController
      * @Route("/trick/{id}/edit", name="trick_edit")
      * @Security("is_granted('ROLE_USER') and tricks.getUser() == user")
      */
-    public function editTrick(Tricks $tricks = null, Request $request, ObjectManager $manager, UploadFile $uploadFile, User $user)
+    public function editTrick(Tricks $tricks = null, Request $request, ObjectManager $manager, UploadFile $uploadFile)
     {
         if(!$tricks) {
             return $this->redirectToRoute('error_page');

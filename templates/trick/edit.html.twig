@@ -22,7 +22,6 @@
                 </div>
                 <div class="intro-lead-in">Snowtricks</div>
                 <div class="intro-heading text-uppercase">{{ trick.name }}</div>
-                <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#gallerie">En savoir plus</a>
             </div>
         </div>
     </header>
@@ -37,7 +36,9 @@
                 <div class="carousel-inner row w-100 mx-auto" role="listbox">
                     {% for image in trick.images %}
                         <div class="carousel-item1 col-12 col-sm-6 col-md-4 col-lg-3 {% if loop.first %}active{% endif %}">
-                            <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/') }}{{ image.url }}">
+                            <a href="{{ asset('uploads/images/' ~ image.url) }}">
+                                <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/') }}{{ image.url }}">
+                            </a>
                             <div class="edit-delete-btn float-right">
 
                                 <!-- Button trigger modify an image -->
@@ -77,20 +78,18 @@
         </div>
     </section>
 
-    <div class="container row">
-        <div class="offset-3 col-3 mt-4 images" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
-            <label>D'autres images du trick :</label>
-            <div class="form-group image-input">
-                <p class="help-block text-danger"></p>
+        <div class="container row">
+            <div class="images col-md-6" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
+                <div class="form-group image-input">
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            <div class="videos col-md-6" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
+                <div class="form-group video-input">
+                    <p class="help-block text-danger"></p>
+                </div>
             </div>
         </div>
-        <div class="offset-3 col-3 mt-4 videos" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
-            <label>Vidéos du trick :</label>
-            <div class="form-group video-input">
-                <p class="help-block text-danger"></p>
-            </div>
-        </div>
-    </div>
 
     <section class="page-section">
         <div class="container">
@@ -105,8 +104,8 @@
             </div>
         </div>
         <div class="float-right mr-5">
-            <button type="submit" class="btn btn-success">Enregistrer</button>
-            <button type="button" class="btn btn-danger" id="{{ trick.id }}" data-toggle="modal" data-target="#deleteATrick" data-action="delete-trick">Supprimer cette figure</button>
+                <button type="submit" class="btn btn-success mb-2">Enregistrer</button>
+                <button type="button" class="btn btn-danger mb-2" id="{{ trick.id }}" data-toggle="modal" data-target="#deleteATrick" data-action="delete-trick">Supprimer cette figure</button>
         </div>
     </section>
 
@@ -274,6 +273,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+
             $('button[data-action="delete-image"]').click(function () {
 
                 let id = $(this).attr('id');
