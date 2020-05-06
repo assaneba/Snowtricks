@@ -6,7 +6,6 @@ use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use function is_numeric;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,12 +26,10 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function totalComments() {
         //  Query how many rows are there in the Comment table
-        $query = $this->createQueryBuilder('c')
-                      ->select('count(c.id)')
-                      ->getQuery()
-                      ->getSingleScalarResult();
-
-        return $query;
+        return $query = $this->createQueryBuilder('c')
+                             ->select('count(c.id)')
+                             ->getQuery()
+                             ->getSingleScalarResult();
     }
 
     /**
@@ -40,7 +37,7 @@ class CommentRepository extends ServiceEntityRepository
      * @param $limit
      * @return Paginator
      */
-    public function paginate($page, $limit) {
+    public function paginate($trick, $page, $limit) {
         if (!is_numeric($page)) {
             throw new \InvalidArgumentException(
                 'La valeur de l\'argument $page est incorrecte (valeur : ' . $page . ').'
@@ -55,7 +52,7 @@ class CommentRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('c')
                       ->addOrderBy('c.createdAt', 'DESC')
-                      ->where('c.published = true')
+                      ->where('c.published = true AND c.trick ='. $trick->getId())
                       ->getQuery()
                       ->setFirstResult(($page - 1) * $limit)
                       ->setMaxResults($limit);
@@ -63,18 +60,16 @@ class CommentRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
-
     /**
      * @return array
      */
-    public function unpublished() {
-        $query = $this->createQueryBuilder('c')
-            ->addOrderBy('c.createdAt', 'DESC')
-            ->where('c.published = false')
-            ->getQuery()
-            ->execute();
+    public function getUnpublishedComments() {
 
-        return $query;
+        return $query = $this->createQueryBuilder('c')
+                             ->addOrderBy('c.createdAt', 'DESC')
+                             ->where('c.published = false')
+                             ->getQuery()
+                             ->execute();
     }
 
 }

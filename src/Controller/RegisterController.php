@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Service\UploadFile;
 use Doctrine\Common\Persistence\ObjectManager;
-use function dump;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +14,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegisterController extends AbstractController
 {
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param UploadFile $uploadFile
+     * @param UserPasswordEncoderInterface $encoder
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      * @Route("/register", name="register")
      */
     public function registration(Request $request, ObjectManager $manager, UploadFile $uploadFile, UserPasswordEncoderInterface $encoder)

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserEditType;
 use App\Form\UserType;
 use App\Service\UploadFile;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -15,6 +16,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/manage-users", name="manage-users")
      * @isGranted("ROLE_ADMIN", message="Vous devez vous admin pour modifier cette section !")
      */
@@ -29,6 +32,9 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param ObjectManager $manager
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/{id}/delete-user", name="delete-user")
      * @isGranted("ROLE_ADMIN", message="Vous devez vous admin pour modifier cette section !")
      */
@@ -43,6 +49,9 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param ObjectManager $manager
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/{id}/change-role", name="change-role")
      * @isGranted("ROLE_ADMIN", message="Vous devez vous admin pour modifier cette section !")
      */
@@ -62,25 +71,25 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param UploadFile $uploadFile
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/edit-profile", name="edit-profile")
      * @isGranted("ROLE_USER", message="Vous devez vous connecter pour modifier votre profil")
      */
-    public function editProfile(Request $request, ObjectManager $manager, UploadFile $uploadFile, UserPasswordEncoderInterface $encoder)
+    public function editProfile(Request $request, ObjectManager $manager, UploadFile $uploadFile)
     {
         $user = $this->getUser();
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() AND $form->isValid()) {
-
             if ($form['profileImage']->getData()) {
                 $profileImagePath = $uploadFile->upload($form['profileImage']->getData());
                 $user->setProfileImage($profileImagePath);
             }
-
-            $hashedPassword = $encoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($hashedPassword);
 
             $manager->persist($user);
             $manager->flush();
@@ -88,7 +97,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('security/registration.html.twig', [
+        return $this->render('user/edit-profile.html.twig', [
             'form' => $form->createView(),
         ]);
     }

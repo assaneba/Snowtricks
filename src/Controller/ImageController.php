@@ -5,23 +5,30 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Entity\Tricks;
 use App\Form\ImagesType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use function dump;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use function unlink;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * Class ImageController
+ * @package App\Controller
+ */
 class ImageController extends AbstractController
 {
     /**
+     * @param Tricks|null $trick
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/image/{id}/delete-default", name="delete-default-image")
      * @isGranted("ROLE_USER", message="Vous devez vous connectés pour modifier cette section")
      */
     public function deleteDefaultImage(Tricks $trick = null, Request $request, ObjectManager $manager)
     {
-        if($trick->getDefaultImage() != 'home_img.jpg') {
+        if($trick->getDefaultImage() !== 'home_img.jpg') {
             unlink($this->getParameter('images_directory') . '/' . $trick->getDefaultImage());
             $trick->setDefaultImage('home_img.jpg');
             $manager->persist($trick);
@@ -32,21 +39,49 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/modify-an-image/{idTrick}/{idImage}", name="modify-an-image")
+     * @param Image $image
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/image/{id}/modify", name="modify-image")
      * @isGranted("ROLE_USER", message="Vous devez vous connectés pour modifier cette section")
      */
-    public function modifyAnImage($idTrick, $idImage, Request $request, ObjectManager $manager)
+    public function modifyImage(Image $image, ObjectManager $manager)
     {
+        /* Getting file name */
+        $filename = $_FILES['file']['name'];
 
+        /* Location */
+        $location = $this->getParameter('images_directory').'/'.$filename;
+
+        /* Delete previous image and set the new image url  */
+        unlink($this->getParameter('images_directory') . '/' . $image->getUrl());
+        $image->setUrl($filename);
+
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+            $manager->flush();
+            $this->addFlash('success', 'Image modifiée avec succès !');
+
+            return $this->redirectToRoute('trick_edit', ['id' => $image->getTrick()->getId()]);
+        }
     }
 
     /**
-     * @Route("/delete-an-image/{id}", name="delete-an-image")
+     * @param Image $image
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/image/{id}/delete", name="delete-an-image")
      * @isGranted("ROLE_USER", message="Vous devez vous connectés pour modifier cette section")
      */
-    public function deleteAnImage(Tricks $trick = null, Request $request, ObjectManager $manager)
+    public function deleteAnImage(Image $image, ObjectManager $manager)
     {
+        $idTrick = $image->getTrick()->getId();
 
+        unlink($this->getParameter('images_directory').'/'.$image->getUrl());
+
+        $manager->remove($image);
+        $manager->flush();
+
+        return $this->redirectToRoute('trick_edit', ['id' => $idTrick]);
     }
 
 }

@@ -16,6 +16,11 @@
     margin-top: -20px;
 }
 
+/* Hide render-rest form.images and form.videos in trick/edit.html.twig  */
+form > fieldset {
+    display: none;
+}
+
 section {
     margin-top: 0px;
 }

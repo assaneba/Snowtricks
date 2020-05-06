@@ -6,11 +6,12 @@ use App\Entity\Comment;
 use App\Entity\GroupOfTricks;
 use App\Entity\Image;
 use App\Entity\Tricks;
+use App\Entity\Video;
 use App\Form\CommentType;
 use App\Form\GroupType;
 use App\Form\ImagesType;
-use App\Form\TrickEditType;
 use App\Form\TrickType;
+use App\Form\VideoType;
 use App\Repository\CommentRepository;
 use App\Service\UploadFile;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,6 +30,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class TrickController extends AbstractController
 {
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/trick", name="trick")
      */
     public function index()
@@ -39,6 +41,10 @@ class TrickController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param GroupOfTricks|null $group
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/trick/group-add", name="group_add")
      * @Route("/trick/{id}/group-edit", name="group_modify")
      * @isGranted("ROLE_ADMIN", message="Vous devez être admin pour modifier cette section ! ")
@@ -65,6 +71,12 @@ class TrickController extends AbstractController
     }
 
     /**
+     * @param $slug
+     * @param ObjectManager $manager
+     * @param Request $request
+     * @param CommentRepository $commentRepository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @Route("/trick/{slug}/view", name="trick_show")
      */
     public function showTrick($slug, ObjectManager $manager, Request $request, CommentRepository $commentRepository)
@@ -88,7 +100,7 @@ class TrickController extends AbstractController
             $page = 1;
         }
 
-        $paginatedComments = $commentRepository->paginate($page, $limit = 2);
+        $paginatedComments = $commentRepository->paginate($trick, $page, $limit = 2);
 
         $pagination = array(
             'page' => $page,
@@ -99,7 +111,6 @@ class TrickController extends AbstractController
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setCreatedAt(new \DateTime());
-            $comment->setPublished(false);
             $comment->setTrick($trick);
             $comment->setUser($this->getUser());
 
@@ -118,6 +129,11 @@ class TrickController extends AbstractController
     }
 
     /**
+     * @param ObjectManager $manager
+     * @param Request $request
+     * @param UploadFile $uploadFile
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      * @Route("/trick/add", name="trick_add")
      * @isGranted("ROLE_USER", message="Vous devez vous connecter pour ajouter un Trick !")
      */
@@ -169,6 +185,11 @@ class TrickController extends AbstractController
     }
 
     /**
+     * @param Tricks|null $tricks
+     * @param Request $request
+     * @param ObjectManager $manager
+     * @param UploadFile $uploadFile
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/trick/{id}/edit", name="trick_edit")
      * @isGranted("ROLE_USER", message="Vous devez être connecté pour modifier cette section ! ")
      */
@@ -181,6 +202,8 @@ class TrickController extends AbstractController
         $imagesCollect = new ArrayCollection();
         $videoCollect = new ArrayCollection();
 
+        $image = new Image();
+
         foreach ($tricks->getVideos() as $video) {
             $videoCollect->add($video);
         }
@@ -189,11 +212,25 @@ class TrickController extends AbstractController
             $imagesCollect->add($image);
         }
 
-        $form = $this->createForm(TrickEditType::class, $tricks);
+        $form = $this->createForm(TrickType::class, $tricks);
+        $formImage = $this->createForm(ImagesType::class, $image);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() AND $form->isValid()) {
-            // Vérifier si une image par défaut a été soumise et supprimer l'ancienne
+            $files = $request->files->get('trick', 'images');
+
+            foreach ($tricks->getImages() as $index => $illustration) {
+                if ($anItem = $files['images'][$index]['url']) {
+                    $anImage = $anItem;
+                    $newNameFile = $uploadFile->upload($anImage);
+
+                    $illustration->setUrl($newNameFile);
+                    $imagesCollect->add($illustration);
+                }
+            }
+
+            // Vérify if a default image has been submitted and delete the old one
             if ($form['defaultImage']->getData()) {
                 $newDefaultImage = $uploadFile->upload($form['defaultImage']->getData());
                 $previousImage = $tricks->getDefaultImage();
@@ -201,7 +238,6 @@ class TrickController extends AbstractController
                 if ($previousImage != 'home_img.jpg') {
                     unlink($this->getParameter('images_directory').'/'.$previousImage);
                 }
-
                 $tricks->setDefaultImage($newDefaultImage);
             }
 
@@ -212,7 +248,23 @@ class TrickController extends AbstractController
         return $this->render('trick/edit.html.twig', [
             'trick' => $tricks,
             'form' => $form->createView(),
+            'formImage' => $formImage->createView(),
         ]);
+    }
+
+    /**
+     * @param Tricks $trick
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/trick/{id}/delete")
+     * @isGranted("ROLE_USER", message="Vous devez être connecté pour modifier cette section ! ")
+     */
+    public function deleteTrick(Tricks $trick, ObjectManager $manager)
+    {
+        $manager->remove($trick);
+        $manager->flush();
+
+        return $this->redirectToRoute('home');
     }
 
 }

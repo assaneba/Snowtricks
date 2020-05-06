@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use function dump;
 use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +16,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
     /**
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -33,6 +34,7 @@ class LoginController extends AbstractController
     }
 
     /**
+     * @throws \Exception
      * @Route("/logout", name="app_logout")
      */
     public function logout()
@@ -41,6 +43,11 @@ class LoginController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param Swift_Mailer $mailer
+     * @param TokenGeneratorInterface $tokenGenerator
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/forgotten_password", name="app_forgotten_password")
      */
     public function forgetPassword(Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, TokenGeneratorInterface $tokenGenerator)
@@ -89,6 +96,10 @@ class LoginController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param string $token
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/reset_password/{token}", name="app_reset_password")
      */
     public function resetPassword(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder)

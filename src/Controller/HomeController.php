@@ -12,7 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+
     /**
+     * @param TricksRepository $tricksRepository
+     * @param Request $request
+     * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @Route("/", name="home")
      */
     public function index(TricksRepository $tricksRepository, Request $request)
@@ -39,6 +44,7 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @return Response
      * @Route("/not-found", name="error_page")
      */
     public function errorPage()

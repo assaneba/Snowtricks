@@ -12,12 +12,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class CommentController extends AbstractController
 {
     /**
+     * @param CommentRepository $commentRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/manage-comments", name="manage-comments")
      * @isGranted("ROLE_ADMIN", message="Vous devez être admin pour accèder à cette section")
      */
-    public function manComments(CommentRepository $commentRepository)
+    public function manageComments(CommentRepository $commentRepository)
     {
-        $comments = $commentRepository->unpublished();
+        $comments = $commentRepository->getUnpublishedComments();
 
         return $this->render('comment/manage-comments.html.twig', [
             'comments' => $comments,
@@ -25,10 +27,13 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete-com", name="delete-com")
+     * @param Comment $comment
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("comment/{id}/delete", name="delete-com")
      * @isGranted("ROLE_ADMIN", message="Vous devez être admin pour accèder à cette section")
      */
-    public function delComments(Comment $comment, ObjectManager $manager)
+    public function deleteComment(Comment $comment, ObjectManager $manager)
     {
         if ($comment) {
             $manager->remove($comment);
@@ -39,10 +44,13 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/validate-comments", name="validate-comments")
+     * @param Comment $comment
+     * @param ObjectManager $manager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("comment/{id}/validate", name="validate-comments")
      * @isGranted("ROLE_ADMIN", message="Vous devez être admin pour accèder à cette section")
      */
-    public function valComments(Comment $comment, ObjectManager $manager)
+    public function validateComment(Comment $comment, ObjectManager $manager)
     {
         if ($comment) {
             $comment->setPublished(true);
