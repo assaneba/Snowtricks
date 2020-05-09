@@ -14,8 +14,6 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('embed', TextType::class)
-            //->add('caption')
-            //->add('trick')
         ;
     }
 

@@ -21,8 +21,6 @@ class TrickType extends AbstractType
         $builder
             ->add('name')
             ->add('description', TextareaType::class)
-            //->add('createdAt')
-            //->add('lastModifyAt')
             ->add('defaultImage', FileType::class, [
                 'required' => false,
                 'mapped' => false
