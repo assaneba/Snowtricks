@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Annuaire Snowtricks!{% endblock %}
 
   {% block header %}
       <!-- Header -->
       <section class="page-section">
-          <header class="masthead">
+          <header id="homepage" class="masthead image-box" style="--image-url('../public/uploads/images/home_img.jpg')">
               <div class="container">
                   <div class="intro-text">
-                      <div class="intro-lead-in">Welcome To Our Studio!</div>
-                      <div class="intro-heading text-uppercase">It's Nice To Meet You</div>
-                      <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a>
+                      <div class="intro-lead-in">Bienvenue sur l'annuaire !</div>
+                      <div class="intro-heading text-uppercase">Snowtricks</div>
+                      <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#tricks">Voir les figures</a>
                   </div>
               </div>
           </header>
@@ -19,10 +19,10 @@
 
 {% block body %}
 
-    <section class="page-section">
+    <section class="page-section empty-top2" id="page-section">
         <div class="container">
-            <h2 class="text-center mb-5">
-                Bienvenue sur l' annuaire Snowtricks !
+            <h2 class="text-center mb-5" id="tricks">
+                Liste des Figures :
             </h2>
 
             <div class="row row-cols-1 row-cols-md-2">
@@ -33,7 +33,22 @@
                             <img src="{{ asset('uploads/images/') }}{{ trick.defaultImage }}" class="card-img-top" alt="{{ trick.name }}">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title"><a href="{{ path('trick_show', {'slug': trick.slug }) }}"> {{ trick.name }} </a></h5>
+                            <div class="row">
+                                <h5 class="card-title col-7"><a href="{{ path('trick_show', {'slug': trick.slug }) }}"> {{ trick.name }} </a></h5>
+
+                                {% if app.user == trick.user %}
+                                <div class="float-right col-5">
+                                    <!-- Button trigger modify an image -->
+                                    <a href="{{ path('trick_edit', {'id': trick.id}) }}" type="button" class="btn btn-info">
+                                        <i class="fas fa-pen-square"></i>
+                                    </a>
+                                    <!-- Button trigger delete an image -->
+                                    <button type="button" class="btn btn-danger" id="{{ trick.id }}" data-toggle="modal" data-target="#deleteTrick" data-action="delete-trick">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                {% endif %}
+                            </div>
                             <p class="card-text">Groupe(s) :
                                 {% for group in trick.groupOfTricks %}
                                     {{ group.name~' - ' }}
@@ -45,9 +60,50 @@
                 {% endfor %}
             </div>
             {% include 'pagination/pagination.html.twig' %}
+            <div id="page-end"></div>
 
         </div>
 
+        <!-- Go to top arrow -->
+        <a href="#page-section" class="gotop-btn"> <i class="fas fa-arrow-up"></i> </a>
+
+        <!-- Modal Delete a Trick -->
+        <div class="modal fade" id="deleteTrick" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Supprimer la Figure</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Etes-vous sûr de vouloir supprimer la figure ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <a type="button" class="btn btn-danger" href="#">Confirmer la suppression</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('button[data-action="delete-trick"]').click(function () {
+
+                let id = $(this).attr('id');
+                let path = "/trick/"+ id +"/delete";
+
+                $('#deleteTrick .modal-footer a').attr("href", path);
+            });
+        });
+    </script>
 
 {% endblock %}

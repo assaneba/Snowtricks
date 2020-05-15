@@ -47,13 +47,10 @@ class ImageController extends AbstractController
      */
     public function modifyImage(Image $image, ObjectManager $manager)
     {
-        /* Getting file name */
         $filename = $_FILES['file']['name'];
 
-        /* Location */
         $location = $this->getParameter('images_directory').'/'.$filename;
 
-        /* Delete previous image and set the new image url  */
         unlink($this->getParameter('images_directory') . '/' . $image->getUrl());
         $image->setUrl($filename);
 
@@ -63,6 +60,7 @@ class ImageController extends AbstractController
 
             return $this->redirectToRoute('trick_edit', ['id' => $image->getTrick()->getId()]);
         }
+
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\GroupOfTricks;
 use App\Entity\Tricks;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -9,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function var_dump;
 
 class HomeController extends AbstractController
 {
@@ -29,7 +31,7 @@ class HomeController extends AbstractController
             $page = 1;
         }
 
-        $paginatedTricks = $tricksRepository->paginate($page, $limit = 3);
+        $paginatedTricks = $tricksRepository->paginate($page, $limit = 9);
         $pagination = array(
             'page' => $page,
             'nbPages' => ceil(count($paginatedTricks) / $limit),
@@ -53,5 +55,4 @@ class HomeController extends AbstractController
             'controller_name' => 'annuaire Snowtricks',
         ]);
     }
-
 }

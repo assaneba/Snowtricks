@@ -7,12 +7,21 @@
     <link href="{{ asset('css/comments.css') }}" rel="stylesheet">
 
         <!-- Header -->
-        <header class="masthead empty-top" style="background-image: url({{ asset('uploads/images/') }}{{ trick.defaultImage }}) !important">
+        <header class="masthead empty-top image-box" style="background-image: url({{ asset('uploads/images/' ~ trick.defaultImage) }}) !important">
             <div class="container">
                 <div class="intro-text">
+
+                    {% if app.user == trick.user %}
+                    <div class="edit-delete-btn mr-5">
+                        <!-- Button trigger modify Trick image -->
+                        <a href="{{ path('trick_edit', {'id': trick.id}) }}" type="button" class="btn btn-info">
+                            <i class="fas fa-pen-square"></i>
+                            Éditer ce trick
+                        </a>
+                    </div>
+                    {% endif %}
                     <div class="intro-lead-in">Snowtricks</div>
                     <div class="intro-heading text-uppercase">{{ trick.name }}</div>
-                    <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#gallerie">En savoir plus</a>
                 </div>
             </div>
         </header>
@@ -21,13 +30,15 @@
 {% block body %}
 
     <!-- Images and videos section -->
-    <section class="page-section" id="gallerie">
+    <section class="page-section" id="gallerie-show">
             <div class="container-fluid">
-                <div id="carousel-example" class="carousel slide" data-ride="carousel">
+                <div id="carousel-example" class="carousel slide" data-ride="false" data-interval="false">
                     <div class="carousel-inner row w-100 mx-auto" role="listbox">
                         {% for image in trick.images %}
                         <div class="carousel-item col-12 col-sm-6 col-md-4 col-lg-3 {% if loop.first %}active{% endif %}">
-                            <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/') }}{{ image.url }}" alt="{{ image.url }}">
+                            <a href="{{ asset('uploads/images/' ~ image.url) }}">
+                                <img class="img-fluid mx-auto d-block" src="{{ asset('uploads/images/' ~ image.url) }}" alt="{{ image.url }}">
+                            </a>
                         </div>
                         {% endfor %}
                         {% for video in trick.videos %}
@@ -49,6 +60,10 @@
         </div>
     </section>
 
+    <div id="show-medias" class="text-center mt-4 mb-4">
+        <button class="btn btn-primary btn-lg">Voir les médias</button>
+    </div>
+
     <section class="page-section">
         <div class="container">
             <h2 class="text-center mb-5">Description de la figure</h2>
@@ -66,7 +81,6 @@
                 </ul>
             </div>
         </div>
-
     </section>
 
     {# Comments section  #}
@@ -79,8 +93,8 @@
             </div>
             <div class="comment-tabs">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li class="btn btn-warning"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Les commentaires</h4></a></li>
-                    <li class="ml-3 btn btn-warning"><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Commenter</h4></a></li>
+                    <li class="btn btn-warning mb-3"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Les commentaires</h4></a></li>
+                    <li class="ml-3 btn btn-warning mb-3"><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Commenter</h4></a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="comments-logout">
@@ -138,14 +152,20 @@
             </div>
         </div>
     </div>
-
 </div>
+
 
 {% endblock %}
 
-{% block javascprits %}
+{% block javascripts %}
 
-    <!-- For trick caroussel -->
-    <script src="{{ asset('js/carousel-trick.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#show-medias').click(function () {
+                $('#show-medias').hide();
+                $('#gallerie-show').show();
+            });
+        });
+    </script>
 
 {% endblock %}

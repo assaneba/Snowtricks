@@ -23,7 +23,7 @@ jQuery(document).ready(function() {
 var $collectionHolder;
 
 // setup an "add a image" link
-var $addImageButton = $('<button type="button" class="btn btn-sm btn-primary btn-add" data-rel="#images">Uploader une image</button>');
+var $addImageButton = $('<div class="text-center ml-5"><button type="button" class="btn btn-sm btn-primary btn-add" data-rel="#images">Ajouter une image</button></div>');
 var $newLinkLi = $('<p></p>').append($addImageButton);
 
 function addTagForm($collectionHolder, $newLinkLi) {

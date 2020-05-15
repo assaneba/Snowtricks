@@ -20,5 +20,5 @@
 
 .idea/
 .DS_Store
-
 /public/uploads/
+/public/node_modules/

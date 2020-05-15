@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
 var $collectionHolder2;
 
 // setup an "add a tag" link
-var $addVideoButton = $('<button type="button" class="btn btn-sm btn-primary btn-add" data-rel="#videos">Ajout embed d\'une vidéo</button>');
+var $addVideoButton = $('<div class="text-center"> <button type="button" class="btn btn-sm btn-primary btn-add" data-rel="#videos">Ajouter une vidéo</button></div>');
 var $newLinkLi2 = $('<ul></ul>').append($addVideoButton);
 
 function addTagForm($collectionHolder2, $newLinkLi2) {
