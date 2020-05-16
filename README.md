@@ -68,7 +68,7 @@ Launch the Apache/Php runtime environment by using :
 ```
 php bin/console server:run
 ```
-Then go to <http://localhost:8000> from your browser.
+# Then go to <http://localhost:8000> from your browser.
 
 ### Users accounts
 
