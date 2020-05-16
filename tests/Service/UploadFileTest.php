@@ -20,6 +20,6 @@ class UploadFileTest extends TestCase
 
         $result = $uploadFile->upload($image);
 
-        $this->assertEquals('backflip-2-.jpeg', $result);
+        $this->assertEquals('backflip-2.jpeg', $result);
     }
 }
