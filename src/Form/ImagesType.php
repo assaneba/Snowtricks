@@ -33,8 +33,6 @@ class ImagesType extends AbstractType
                 ]
 
             ])
-            //->add('url')
-            //->add('trick')
         ;
     }
 
