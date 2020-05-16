@@ -2,12 +2,12 @@
  * Costum style for Snowtricks
  */
 
-#mainNav {
+#mainNav  {
     background-color: #495057;
 }
 
 /* Remove button Suivant and Précédent on Pagination  */
-.remove-btn {
+.remove-btn  {
     display: none !important;
 }
 
