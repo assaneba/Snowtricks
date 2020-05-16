@@ -19,8 +19,8 @@ class UploadFile
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = iconv('UTF-8', 'ASCII//TRANSLIT', $originalFilename);
-        //$fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-        $fileName = $safeFilename.'.'.$file->guessExtension();
+        $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+        //$fileName = $safeFilename.'.'.$file->guessExtension();
 
         try {
             $file->move($this->getTargetDirectory(), $fileName);

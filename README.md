@@ -31,7 +31,6 @@ composer install
 ```
 npm install public/
 ```
-NB : create ```upload/images/``` directory to contain uploaded files
 
 ### Database
 
