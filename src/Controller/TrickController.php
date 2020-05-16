@@ -28,6 +28,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TrickController extends AbstractController
 {
@@ -81,7 +82,7 @@ class TrickController extends AbstractController
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @Route("/trick/{slug}/view", name="trick_show")
      */
-    public function showTrick($slug, ObjectManager $manager, Request $request, CommentRepository $commentRepository)
+    public function showTrick($slug, EntityManagerInterface $manager, Request $request, CommentRepository $commentRepository)
     {
         $trick = $manager->getRepository(Tricks::class)->findOneBySlug($slug);
 
