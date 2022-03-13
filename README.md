@@ -1,6 +1,5 @@
 # Snowtricks
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bfc8fecb47a84e138a1627509add930e)](https://www.codacy.com/manual/assaneba/Snowtricks?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=assaneba/Snowtricks&amp;utm_campaign=Badge_Grade)
 
 Community website of snowboard lovers.
 
